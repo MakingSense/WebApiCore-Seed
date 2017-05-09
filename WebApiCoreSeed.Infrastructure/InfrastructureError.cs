@@ -1,4 +1,4 @@
-﻿using WebApiCoreSeed.Infrastructure.Result;
+using WebApiCoreSeed.Infrastructure.Result;
 
 namespace WebApiCoreSeed.Infrastructure
 {

@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
+namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
 {
     using System;
     using System.Net;

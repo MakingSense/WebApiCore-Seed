@@ -4,9 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using WebApiCoreSeed.Data.EF;
 using WebApiCoreSeed.Domain.Services;
 using WebApiCoreSeed.Domain.Services.Interfaces;
+using WebApiCoreSeed.Infrastructure.AuthZero;
+using WebApiCoreSeed.Infrastructure.RestClient;
+using WebApiCoreSeed.WebApi.Authorization;
+using WebApiCoreSeed.WebApi.Middleware;
 
 namespace WebApiCoreSeed.WebApi
 {
@@ -32,6 +37,19 @@ namespace WebApiCoreSeed.WebApi
             // Add framework services.
             services.AddMvc();
 
+            IAuthorizationPolicies authorizationPolicies = new AuthorizationPolicies();
+            services.AddSingleton(authorizationPolicies);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(nameof(AuthorizationPolicies.AdminOnly), authorizationPolicies.AdminOnly);
+            });
+
+            // Register Infrastructure dependencies
+            services.AddScoped<IRestClient>(sp => new RestClient($"https://{Configuration["auth0:domain"]}", new HttpClient()));
+            services.AddSingleton<IAuthZeroClient>(sp => new AuthZeroClient(sp.GetRequiredService<IRestClient>(), Configuration["auth0:NonInteractiveClientId"], Configuration["auth0:NonInteractiveClientSecret"], Configuration["auth0:domain"]));
+            services.AddTransient<IAuthZeroService>(sp => new AuthZeroService(sp.GetRequiredService<IAuthZeroClient>()));
+
             // Register Services
             services.AddTransient<IUserService>(sp => new UserService(sp.GetRequiredService<WebApiCoreSeedContext>()));
         }
@@ -41,6 +59,16 @@ namespace WebApiCoreSeed.WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var jwtOptions = new JwtBearerOptions
+            {
+                Audience = Configuration["auth0:clientId"],
+                Authority = $"https://{Configuration["auth0:domain"]}/",
+            };
+
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseMiddleware(typeof(AuthorizationMiddleware));
+            app.UseJwtBearerAuthentication(jwtOptions);
 
             app.UseMvc();
             DatabaseSeed.Initialize(dbContext);

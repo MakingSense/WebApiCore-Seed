@@ -1,11 +1,11 @@
-﻿namespace WebApiCoreSeed.Domain.Pagination
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
+namespace WebApiCoreSeed.Domain.Pagination
+{
     /// <summary> Wrapper for results exposed as pages </summary>
     /// <typeparam name="T"> Object type contained inside page's collection </typeparam>
     public class PaginatedResult<T>
