@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebApiCoreSeed.Data\WebApiCoreSeed.Data.csproj" />
+    <ProjectReference Include="..\WebApiCoreSeed.Domain\WebApiCoreSeed.Domain.csproj" />
   </ItemGroup>
 
 </Project>
