@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Data", "WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.WebApi", "WebApiCoreSeed.WebApi\WebApiCoreSeed.WebApi.csproj", "{C7B52B24-AF58-46AD-BCCC-672347A45955}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Domain", "WebApiCoreSeed.Domain\WebApiCoreSeed.Domain.csproj", "{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiCoreSeed.UnitTests", "WebApiCoreSeed.UnitTests\WebApiCoreSeed.UnitTests.csproj", "{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{C7B52B24-AF58-46AD-BCCC-672347A45955}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7B52B24-AF58-46AD-BCCC-672347A45955}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7B52B24-AF58-46AD-BCCC-672347A45955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
