@@ -1,11 +1,12 @@
 
-# webapi-seed
+# WebapiCore-seed
 
 ## Technologies
 * Server Side
     * Asp.Net Web Api Core
     * Entity Framework(as DAL)
-    * Moq
+    * Net Core DI
+    * Xunit
     
 ##Architecture
 * DDD classic
