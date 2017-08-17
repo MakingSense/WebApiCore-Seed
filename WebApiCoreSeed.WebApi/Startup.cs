@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,8 +35,13 @@ namespace WebApiCoreSeed.WebApi
         {
             services.AddDbContext<WebApiCoreSeedContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                 .AddMvcOptions(o => o.OutputFormatters.Add(
+                    new XmlDataContractSerializerOutputFormatter()
+                    )
+                );
 
             IAuthorizationPolicies authorizationPolicies = new AuthorizationPolicies();
             services.AddSingleton(authorizationPolicies);
@@ -67,9 +73,10 @@ namespace WebApiCoreSeed.WebApi
             };
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-            app.UseMiddleware(typeof(AuthorizationMiddleware));
+            app.UseMiddleware(typeof(AuthorizationMiddleware));            
             app.UseJwtBearerAuthentication(jwtOptions);
 
+            app.UseStatusCodePages();
             app.UseMvc();
             DatabaseSeed.Initialize(dbContext);
         }

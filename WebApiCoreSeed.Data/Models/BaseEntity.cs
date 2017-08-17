@@ -12,8 +12,10 @@ namespace WebApiCoreSeed.Data.Models
         public Guid Id { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string CreatedBy { get; set; }
 
+        [MaxLength(50)]
         public string UpdatedBy { get; set; }
 
         [Required]
