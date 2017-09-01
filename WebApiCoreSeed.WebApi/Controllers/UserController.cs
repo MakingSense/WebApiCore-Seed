@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using WebApiCoreSeed.Data.Models;
 using WebApiCoreSeed.Domain.Services.Interfaces;
 using WebApiCoreSeed.WebApi.Controllers.Dtos;
+using WebApiCoreSeed.WebApi.Filters;
 
 namespace WebApiCoreSeed.WebApi.Controllers
 {
@@ -39,16 +40,12 @@ namespace WebApiCoreSeed.WebApi.Controllers
 
         // POST api/users
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody]UserDto user)
         {
             if (user == null)
             {
                 return BadRequest();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
             }
 
             var affectedRows = await _userService.CreateAsync(new User
@@ -67,16 +64,12 @@ namespace WebApiCoreSeed.WebApi.Controllers
 
         // PUT api/users/0E95A953-D023-4425-ED35-08D4E34D4DB8
         [HttpPut("{id}")]
+        [ValidateModel]
         public async Task<IActionResult> Update(Guid id, [FromBody]UserDto user)
         {
             if (user == null)
             {
                 return BadRequest();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
             }
 
             var affectedRows = await _userService.UpdateAsync(new User
