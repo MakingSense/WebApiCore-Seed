@@ -11,7 +11,7 @@ namespace WebApiCoreSeed.Data.EF
         /// DbContextOptions parameter is required by AspNet core initialization
         /// </summary>
         /// <param name="options">Options used to create this <see cref="WebApiCoreSeedContext"/> instance </param>
-        public WebApiCoreSeedContext(DbContextOptions options) : base(options) {  }
+        public WebApiCoreSeedContext(DbContextOptions options) : base(options) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiCoreSeedContext"/> class without parameters.
