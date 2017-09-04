@@ -15,8 +15,7 @@
         /// <param name="dbContext">Context to be initialized with sample data</param>
         public static void Initialize(WebApiCoreSeedContext dbContext)
         {
-            // The following line is commented as it'll mess with the EF tracking table. We will always create the Data Structure using the migrations
-            // dbContext.Database.EnsureCreated();
+            dbContext.Database.EnsureCreated();
 
             if (!dbContext.Users.Any())
             { 
