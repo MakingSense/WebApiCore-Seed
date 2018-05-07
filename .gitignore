@@ -155,3 +155,6 @@ Nuget/**
 .vs/
 nCrunchTemp*
 *.playlist
+
+#vs code config
+.vscode
