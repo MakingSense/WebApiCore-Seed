@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApiCoreSeed.Data.Models;
 using WebApiCoreSeed.Domain.Services.Interfaces;
@@ -9,6 +10,8 @@ using WebApiCoreSeed.WebApi.Filters;
 namespace WebApiCoreSeed.WebApi.Controllers
 {
     [Route("api/users")]
+    [Produces("Application/json")]
+    [ProducesResponseType(typeof(ErrorDto), 500)]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -18,15 +21,29 @@ namespace WebApiCoreSeed.WebApi.Controllers
             _userService = userService;
         }
 
-        // GET api/users
+        /// <summary>
+        /// Gets a list of users
+        /// </summary>
+        /// <response code="200">Gets a list of users</response>
+        /// <return>A list of users</return>
         [HttpGet]
+        [Produces("Application/json")]
+        [ProducesResponseType(typeof(List<User>), 200)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _userService.GetAsync());
         }
 
-        // GET api/users/0E95A953-D023-4425-ED35-08D4E34D4DB8
+        /// <summary>
+        /// Gets a user based on his id
+        /// </summary>
+        /// <param name="id" cref="Guid">Guid of the user</param>
+        /// <response code="200">The user that has the given id</response>
+        /// <response code="404">User with the given id was not found</response>
+        /// <return>A users</return>
         [HttpGet("{id}")]
+        [ValidateModel]
+        [ProducesResponseType(typeof(User), 200)]
         public async Task<IActionResult> Get(Guid id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -38,7 +55,12 @@ namespace WebApiCoreSeed.WebApi.Controllers
             return Ok(user);
         }
 
-        // POST api/users
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="user" cref="UserDto">User model</param>
+        /// <response code="204">User created</response>
+        /// <response code="404">User could not be created</response>
         [HttpPost]
         [ValidateModel]
         public async Task<IActionResult> Create([FromBody]UserDto user)
@@ -62,7 +84,13 @@ namespace WebApiCoreSeed.WebApi.Controllers
             return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;
         }
 
-        // PUT api/users/0E95A953-D023-4425-ED35-08D4E34D4DB8
+        ///<summary>
+        /// Updates an user given his id
+        ///</summary>
+        ///<param name="id" cref="Guid">Guid of the user</param>
+        ///<param name="user" cref="UserDto">User model</param>
+        ///<response code="204">User created</response>
+        ///<response code="404">User not found / User could not be updated</response>
         [HttpPut("{id}")]
         [ValidateModel]
         public async Task<IActionResult> Update(Guid id, [FromBody]UserDto user)
@@ -85,15 +113,16 @@ namespace WebApiCoreSeed.WebApi.Controllers
             return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;
         }
 
-        // DELETE api/users/0E95A953-D023-4425-ED35-08D4E34D4DB8
+        ///<summary>
+        /// Deletes an user given his id
+        ///</summary>
+        ///<param name="id" cref="Guid">Guid of the user</param>
+        ///<response code="204">User Deleted</response>
+        ///<response code="404">User not found / User could not be deleted</response>
         [HttpDelete("{id}")]
+        [ValidateModel]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
-
             var affectedRows = await _userService.DeleteByIdAsync(id);
 
             return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;

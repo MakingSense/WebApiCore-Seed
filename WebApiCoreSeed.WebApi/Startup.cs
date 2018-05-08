@@ -4,13 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using WebApiCoreSeed.Data.EF;
 using WebApiCoreSeed.Domain.Services;
 using WebApiCoreSeed.Domain.Services.Interfaces;
 using WebApiCoreSeed.Infrastructure.AuthZero;
 using WebApiCoreSeed.Infrastructure.RestClient;
 using WebApiCoreSeed.WebApi.Authorization;
+using WebApiCoreSeed.WebApi.Filters;
 using WebApiCoreSeed.WebApi.Middleware;
 
 namespace WebApiCoreSeed.WebApi
@@ -45,6 +50,17 @@ namespace WebApiCoreSeed.WebApi
                 options.AddPolicy(nameof(AuthorizationPolicies.AdminOnly), authorizationPolicies.AdminOnly);
             });
 
+            //Creates the swagger json based on the documented xml/attributes of the endpoints
+            services.AddSwaggerGen(c =>
+            {
+                //Metadata of the api
+                c.SwaggerDoc("v1", GetSwaggerDoc());
+                var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+                c.OperationFilter<ValidateModelResponseOperationFilter>();
+            });
+
             // Register Infrastructure dependencies
             services.AddScoped<IRestClient>(sp => new RestClient($"https://{Configuration["auth0:domain"]}", new HttpClient()));
             services.AddSingleton<IAuthZeroClient>(sp => new AuthZeroClient(sp.GetRequiredService<IRestClient>(), Configuration["auth0:NonInteractiveClientId"], Configuration["auth0:NonInteractiveClientSecret"], Configuration["auth0:domain"]));
@@ -70,8 +86,44 @@ namespace WebApiCoreSeed.WebApi
             app.UseMiddleware(typeof(AuthorizationMiddleware));
             app.UseJwtBearerAuthentication(jwtOptions);
 
+            //Enable swagger midleware
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiCoreSeed V1");
+            });
+
+            
+
             app.UseMvc();
             DatabaseSeed.Initialize(dbContext);
+        }
+
+        /// <summary>
+        /// Returns swagger metadata
+        /// </summary>
+        /// <returns></returns>
+        private static Info GetSwaggerDoc()
+        {
+            return new Info 
+            { 
+                Title = "WebApiCoreSeed", 
+                Version = "v1",
+                Description = "Web Api seed for MS",
+                TermsOfService = "https://github.com/MakingSense/WebApiCore-Seed",
+                Contact = new Contact
+                {
+                    Name = "Gastón Cerioni",
+                    Email = "gcerioni@makingsense.com"
+                },
+                License = new License
+                {
+                    Name = "I would love to put one c:",
+                    Url = "https://github.com/MakingSense/WebApiCore-Seed"
+                }
+            };
         }
     }
 }

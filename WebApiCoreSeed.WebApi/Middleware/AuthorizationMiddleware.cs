@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Net;
 using System.Threading.Tasks;
+using WebApiCoreSeed.WebApi.Controllers.Dtos;
 
 namespace WebApiCoreSeed.WebApi.Middleware
 {
@@ -31,7 +32,7 @@ namespace WebApiCoreSeed.WebApi.Middleware
             var isUserBlocked = context.User.HasClaim(c => c.Type == "UserStatus" && c.Value == "Blocked");
             if (isUserBlocked)
             {
-                var message = JsonConvert.SerializeObject(new { error = "Unauthorized" });
+                var message = JsonConvert.SerializeObject(new ErrorDto("Unauthorized"));
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 await context.Response.WriteAsync(message);
