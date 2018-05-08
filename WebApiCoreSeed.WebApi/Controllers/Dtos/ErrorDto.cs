@@ -13,6 +13,6 @@ namespace WebApiCoreSeed.WebApi.Controllers.Dtos
         /// <summary>
         /// Error message
         /// </summary>
-        public string Error { get; private set; }
+        public string Error { get; }
     }
 }

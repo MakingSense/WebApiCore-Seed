@@ -24,10 +24,9 @@ namespace WebApiCoreSeed.WebApi.Controllers
         /// <summary>
         /// Gets a list of users
         /// </summary>
-        /// <response code="200">Gets a list of users</response>
+        /// <response code="200">A list of users</response>
         /// <return>A list of users</return>
         [HttpGet]
-        [Produces("Application/json")]
         [ProducesResponseType(typeof(List<User>), 200)]
         public async Task<IActionResult> GetAll()
         {
