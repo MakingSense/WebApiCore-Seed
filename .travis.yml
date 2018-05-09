@@ -1,6 +1,7 @@
 language: csharp
 solution: WebApiCoreSeed.sln
-env: DOTNETCORE=1.1
+os: linux
+dotnet: "1.1.2"
 install: dotnet restore
 script:
   - dotnet build
