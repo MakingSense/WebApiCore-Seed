@@ -18,6 +18,7 @@ before_install:
 install: dotnet restore
 script:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - dotnet build --configuration release
   - dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj --configuration release
   - dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj --configuration release
@@ -29,3 +30,9 @@ script:
   - dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
   - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
 >>>>>>> removes mono
+=======
+  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense 
+  - dotnet build
+  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
+  - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
+>>>>>>> adds sudo
