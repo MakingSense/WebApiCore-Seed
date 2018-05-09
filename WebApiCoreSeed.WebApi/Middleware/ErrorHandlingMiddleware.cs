@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using WebApiCoreSeed.Domain.Exceptions;
+using WebApiCoreSeed.WebApi.Controllers.Dtos;
 
 namespace WebApiCoreSeed.WebApi.Middleware
 {
@@ -48,7 +49,7 @@ namespace WebApiCoreSeed.WebApi.Middleware
             // else if (exception is SomeOtherException) code = HttpStatusCode.RequestTimeout;
             // else if (exception is SomeOtherException2) code = HttpStatusCode.BadRequest;
 
-            var result = JsonConvert.SerializeObject(new { error = exception.Message });
+            var result = JsonConvert.SerializeObject(new ErrorDto(exception.Message));
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);
