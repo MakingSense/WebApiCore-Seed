@@ -1,4 +1,5 @@
 language: csharp
+<<<<<<< HEAD
 solution: Seed.sln
 os: linux
 dotnet: "2.0.0"
@@ -10,3 +11,11 @@ script:
   - dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj --configuration release
   - dotnet test Seed.Api.Tests/Seed.Api.Tests.csproj --configuration release
   - dotnet test Seed.Data.Tests/Seed.Data.Tests.csproj --configuration release
+=======
+solution: WebApiCoreSeed.sln
+env: DOTNETCORE=1.1
+install: dotnet restore
+script:
+  - dotnet build --configuration release
+  - dotnet test ~/WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
+>>>>>>> adds travis config file
