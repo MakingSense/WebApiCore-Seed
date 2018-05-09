@@ -2,14 +2,14 @@ language: csharp
 solution: WebApiCoreSeed.sln
 os: linux
 dotnet: "1.0.4"
-mono: none
 before_install: 
   - sudo apt-get install unzip
   - wget -P ~/tools/ "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip"
   - unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscaner
+  - ls ~/tools/sonarscaner
 install: dotnet restore
 script:
-  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense
+  - mono ~/tools/sonarscaner/SonarQube.Scanner.MSBuild.exe begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense 
   - dotnet build
-  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
-  - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release --no-build
+  - mono ~/tools/sonarscaner/SonarQube.Scanner.MSBuild.exe end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
+  - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
