@@ -1,7 +1,11 @@
 language: csharp
 solution: Seed.sln
 os: linux
+<<<<<<< HEAD
 dotnet: "2.0.0"
+=======
+dotnet: "1.0.4"
+>>>>>>> removes mono
 mono: none
 before_install: 
   - sudo apt-get install unzip
@@ -13,8 +17,15 @@ before_install:
   - sudo ls ~/tools/sonarscaner
 install: dotnet restore
 script:
+<<<<<<< HEAD
   - dotnet build --configuration release
   - dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj --configuration release
   - dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj --configuration release
   - dotnet test Seed.Api.Tests/Seed.Api.Tests.csproj --configuration release
   - dotnet test Seed.Data.Tests/Seed.Data.Tests.csproj --configuration release
+=======
+  - dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense 
+  - dotnet build
+  - dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
+  - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
+>>>>>>> removes mono
