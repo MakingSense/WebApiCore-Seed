@@ -32,7 +32,7 @@ script:
 >>>>>>> removes mono
 =======
   - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense 
-  - dotnet build
+  - sudo dotnet build
   - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
   - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
 >>>>>>> adds sudo
