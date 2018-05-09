@@ -1,7 +1,7 @@
 language: csharp
 solution: WebApiCoreSeed.sln
 os: linux
-dotnet: "1.0.4"
+dotnet: "2.0.0"
 mono: none
 before_install: 
   - sudo apt-get install unzip
