@@ -5,5 +5,5 @@ dotnet: "1.0.4"
 mono: none
 install: dotnet restore
 script:
-  - dotnet build
+  - dotnet build --configuration release
   - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
