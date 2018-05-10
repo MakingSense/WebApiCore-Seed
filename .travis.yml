@@ -8,13 +8,13 @@ before_install:
   - mkdir ~/tools/
   - sudo wget -P ~/tools/ "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip"
   - sudo ls ~/tools/
-  - mkdir ~/tools/sonarscaner
-  - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscaner
-  - sudo ls ~/tools/sonarscaner
+  - mkdir ~/tools/sonarscanner
+  - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
+  - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
 install: dotnet restore
 script:
-  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true
+  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true
   - sudo dotnet build
-  - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.verbose=true
+  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.verbose=true
   - sudo dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release --no-build
