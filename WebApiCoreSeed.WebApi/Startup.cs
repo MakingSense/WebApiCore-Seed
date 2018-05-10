@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
@@ -50,6 +51,16 @@ namespace WebApiCoreSeed.WebApi
                 options.AddPolicy(nameof(AuthorizationPolicies.AdminOnly), authorizationPolicies.AdminOnly);
             });
 
+            //Registers the use of a jwt token
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.Audience = Configuration["auth0:clientId"];
+                option.Authority = $"https://{Configuration["auth0:domain"]}/";
+            });
+
             //Creates the swagger json based on the documented xml/attributes of the endpoints
             services.AddSwaggerGen(c =>
             {
@@ -76,15 +87,8 @@ namespace WebApiCoreSeed.WebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            var jwtOptions = new JwtBearerOptions
-            {
-                Audience = Configuration["auth0:clientId"],
-                Authority = $"https://{Configuration["auth0:domain"]}/",
-            };
-
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(AuthorizationMiddleware));
-            app.UseJwtBearerAuthentication(jwtOptions);
 
             //Enable swagger midleware
             app.UseSwagger();
