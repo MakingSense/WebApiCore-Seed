@@ -161,3 +161,6 @@ nCrunchTemp*
 
 #coverlet coverage files
 WebApiCoreSeed.UnitTests/coverage.xml
+
+#sonar qube auto generated files
+.sonarqube

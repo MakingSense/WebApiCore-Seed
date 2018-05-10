@@ -7,12 +7,9 @@ before_install:
   - sudo apt-get install unzip
   - mkdir ~/tools/
   - sudo wget -P ~/tools/ "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip"
-  - sudo ls ~/tools/
   - mkdir ~/tools/sonarscanner
   - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
-  - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
-  - printf $(pwd)/WebApiCoreSeed.UnitTests/coverage.xml
 install: 
   - dotnet restore
 script:
