@@ -11,6 +11,7 @@ before_install:
   - mkdir ~/tools/sonarscaner
   - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscaner
   - sudo ls ~/tools/sonarscaner
+  - sudo chmod 777 ~/tools/sonarscanner -R
 install: dotnet restore
 script:
   - dotnet build --configuration release
