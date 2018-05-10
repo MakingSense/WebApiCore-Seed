@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
+[![Quality Gate](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://sonarcloud.io/api/project_badges/measure?project=makingsensenetcoreseed&metric=alert_status)
+[![Coverage](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://sonarcloud.io/api/project_badges/measure?project=makingsensenetcoreseed&metric=coverage)
 # WebapiCore-seed
 
 ## Technologies
