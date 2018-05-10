@@ -11,6 +11,7 @@ before_install:
   - mkdir ~/tools/sonarscaner
   - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscaner
   - sudo ls ~/tools/sonarscaner
+  - sudo chmod 777 ~/tools/sonarscanner -R
 install: dotnet restore
 script:
   - sudo dotnet ~/tools/sonarscaner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true
