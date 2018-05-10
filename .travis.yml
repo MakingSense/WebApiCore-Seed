@@ -12,7 +12,9 @@ before_install:
   - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
   - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
-install: dotnet restore
+install: 
+  - dotnet add package coverlet.msbuild
+  - dotnet restore
 script:
   - dotnet build --configuration release
   - dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj --configuration release
