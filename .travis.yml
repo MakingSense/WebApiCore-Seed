@@ -12,11 +12,11 @@ before_install:
   - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
   - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
-  - ECHO $(PWD)/WebApiCoreSeed.UnitTests/
+  - printf $(pwd)/WebApiCoreSeed.UnitTests/coverage.xml
 install: 
   - dotnet restore
 script:
-  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true /d:sonar.cs.opencover.reportsPaths="$(PWD)/WebApiCoreSeed.UnitTests/coverage.xml"
+  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true /d:sonar.cs.opencover.reportsPaths="$(pwd)/WebApiCoreSeed.UnitTests/coverage.xml"
   - sudo dotnet build --configuration release
   - sudo dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release 
   - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
