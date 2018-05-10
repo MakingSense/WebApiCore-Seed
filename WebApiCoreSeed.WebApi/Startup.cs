@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,6 +62,17 @@ namespace WebApiCoreSeed.WebApi
                 c.OperationFilter<ValidateModelResponseOperationFilter>();
             });
 
+            var jwtOptions = new JwtBearerOptions
+            {
+                Audience = Configuration["auth0:clientId"],
+                Authority = $"https://{Configuration["auth0:domain"]}/",
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => options = jwtOptions);
+
             // Register Infrastructure dependencies
             services.AddScoped<IRestClient>(sp => new RestClient($"https://{Configuration["auth0:domain"]}", new HttpClient()));
             services.AddSingleton<IAuthZeroClient>(sp => new AuthZeroClient(sp.GetRequiredService<IRestClient>(), Configuration["auth0:NonInteractiveClientId"], Configuration["auth0:NonInteractiveClientSecret"], Configuration["auth0:domain"]));
@@ -76,15 +88,9 @@ namespace WebApiCoreSeed.WebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            var jwtOptions = new JwtBearerOptions
-            {
-                Audience = Configuration["auth0:clientId"],
-                Authority = $"https://{Configuration["auth0:domain"]}/",
-            };
-
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(AuthorizationMiddleware));
-            app.UseJwtBearerAuthentication(jwtOptions);
+            
 
             //Enable swagger midleware
             app.UseSwagger();
