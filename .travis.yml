@@ -1,0 +1,20 @@
+language: csharp
+solution: WebApiCoreSeed.sln
+os: linux
+dotnet: "2.0.0"
+mono: none
+before_install: 
+  - sudo apt-get install unzip
+  - mkdir ~/tools/
+  - sudo wget -P ~/tools/ "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip"
+  - mkdir ~/tools/sonarscanner
+  - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
+  - sudo chmod 777 ~/tools/sonarscanner -R
+install: 
+  - dotnet restore
+script:
+  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true /d:sonar.cs.opencover.reportsPaths="$(pwd)/WebApiCoreSeed.UnitTests/coverage.xml"
+  - sudo dotnet build --configuration release
+  - sudo dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release 
+  - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
+  

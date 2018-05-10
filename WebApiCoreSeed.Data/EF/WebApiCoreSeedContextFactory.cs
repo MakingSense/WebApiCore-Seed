@@ -1,15 +1,15 @@
 ﻿namespace WebApiCoreSeed.Data.EF
 {
-    using System;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.Extensions.Configuration;
+    using System;
     using System.IO;
 
     /// <summary>
     /// Factory for creating <see cref="WebApiCoreSeedContext"/> instances using the connections string from appsettings.
     /// </summary>
-    public class WebApiCoreSeedContextFactory : IDbContextFactory<WebApiCoreSeedContext>
+    public class WebApiCoreSeedContextFactory : IDesignTimeDbContextFactory<WebApiCoreSeedContext>
     {
         private const string ConnectionString = "DefaultConnection";
         private const string StartupProjectName = "WebApiCoreSeed.WebApi";
@@ -29,9 +29,11 @@
         }
 
         /// <inheritdoc/>
-        public WebApiCoreSeedContext Create(DbContextFactoryOptions options)
+        public WebApiCoreSeedContext CreateDbContext(string[] args)
         {
-            return Create(options.ContentRootPath.Replace($"WebApiCoreSeed.WebApi", string.Empty), options.EnvironmentName);
+            return Create(
+                Directory.GetCurrentDirectory().Replace($"WebApiCoreSeed.WebApi", string.Empty), 
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         }
 
         private WebApiCoreSeedContext Create(string basePath, string environmentName)
