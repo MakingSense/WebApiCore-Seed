@@ -158,3 +158,6 @@ nCrunchTemp*
 
 #vs code config
 .vscode
+
+#coverlet coverage files
+WebApiCoreSeed.UnitTests/coverage.xml
