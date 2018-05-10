@@ -8,9 +8,9 @@ before_install:
   - mkdir ~/tools/
   - sudo wget -P ~/tools/ "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip"
   - sudo ls ~/tools/
-  - mkdir ~/tools/sonarscaner
-  - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscaner
-  - sudo ls ~/tools/sonarscaner
+  - mkdir ~/tools/sonarscanner
+  - sudo unzip ~/tools/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip -d ~/tools/sonarscanner
+  - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
 install: dotnet restore
 script:
