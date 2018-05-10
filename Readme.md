@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/MakingSense/WebApiCore-Seed)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/MakingSense/WebApiCore-Seed/tree/issue10-heroku-autodeploy)
 # WebapiCore-seed
 
 ## Technologies
