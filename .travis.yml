@@ -13,7 +13,6 @@ before_install:
   - sudo ls ~/tools/sonarscanner
   - sudo chmod 777 ~/tools/sonarscanner -R
 install: 
-  - dotnet add package coverlet.msbuild
   - dotnet restore
 script:
   - dotnet build --configuration release
