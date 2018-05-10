@@ -1,7 +1,7 @@
 language: csharp
 solution: WebApiCoreSeed.sln
 os: linux
-dotnet: "1.0.4"
+dotnet: "2.0.0"
 mono: none
 install: dotnet restore
 script:
