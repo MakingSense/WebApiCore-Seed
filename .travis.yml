@@ -15,7 +15,7 @@ before_install:
 install: dotnet restore
 script:
   - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true
-  - sudo dotnet build
+  - sudo dotnet build --configuration release
   - sudo dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release --no-build
   - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
   
