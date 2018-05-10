@@ -4,7 +4,9 @@
     "repository": "https://github.com/MakingSense/WebApiCore-Seed",
     "logo": "https://i.vimeocdn.com/portrait/7069879_300x300",
     "keywords": ["asp", "netcore", "dotnet"],
-    "buildpacks": [{
-        "url": "https://github.com/se/heroku-core"
-    }]
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku-softtrends/dotnetcore.main.git"
+        }
+    ]
 }
