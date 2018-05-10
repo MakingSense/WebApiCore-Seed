@@ -7,9 +7,6 @@
   "stack": "cedar-14",
   "buildpacks": [
         {
-            "url": "https://github.com/jincod/dotnetcore-buildpack#v1.1.5"
-        },
-        {
             "url": "https://github.com/hatoro/heroku-core"
         }
     ]
