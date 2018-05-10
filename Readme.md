@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
+
 # WebapiCore-seed
 
 ## Technologies

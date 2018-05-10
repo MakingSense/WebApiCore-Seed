@@ -1,9 +1,0 @@
-language: csharp
-solution: WebApiCoreSeed.sln
-os: linux
-dotnet: "1.0.4"
-mono: none
-install: dotnet restore
-script:
-  - dotnet build --configuration release
-  - dotnet test WebApiCoreSeed.UnitTests/WebApiCoreSeed.UnitTests.csproj --configuration release
