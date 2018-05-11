@@ -39,19 +39,16 @@
 
 
 
-## Technologies
+## What uses
 
-
-* Server Side
-
-| Tecnology  | Reference |
-| ---- | --------- |
- Asp .Net Web Api Core | [Reference](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.0) | 
-| Entity Framework(as DAL) | [Reference](https://docs.microsoft.com/en-us/ef/core/) |
-| Net Core DI | [Reference](https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-2.0) |
-| Xunit | [Reference](https://xunit.github.io/) | 
-| SwaggerUI | [Reference](https://swagger.io/swagger-ui/) | 
-| Swashbuckle | [Reference](https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.0&tabs=visual-studio%2Cvisual-studio-xml) | 
+| Technology  | Description |
+| :---------: | ----------- |
+| [Asp .Net Web Api Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.0) | Core framework |
+| [Entity Framework](https://docs.microsoft.com/en-us/ef/core/) | Data access library |
+| [Net Core DI](https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-2.0) | Integrated dependecy injection library |
+| [Xunit](https://xunit.github.io/) | Unit testing |
+| [SwaggerUI](https://swagger.io/swagger-ui/) | Ui that document and exposes the api endpoints |
+| [Swashbuckle](https://github.com/domaindrivendev/Swashbuckle) | Documentation generator for swagger |
     
 ## Architecture
 * DDD classic
