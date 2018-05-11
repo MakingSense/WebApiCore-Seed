@@ -81,6 +81,70 @@
         ```
 
     7. 
+        On `WebApiCoreSeed.WebApi/Controllers` add a file with the name `NewValueController.cs` and the and create a class called `NewValueController` under the namespace `WebApiCoreSeed.WebApi.Controllers`.
+
+        Before the class firm you need to specify the route prefix, we normally use the name of the resource with a `api/` prefix. The class should inherit form `Controller`, is a good practice that every method must have the verb defined as an attribute and always returns an `IActionResult`. Something like this:
+        ``` csharp
+        [Route("api/newValue")]
+        public class NewValueController : Controller
+        {
+            //...
+            [HttpGet]
+            public Task<IActionResult> MethodName()
+            {
+                //..
+                return Ok(someValue); // retrun NoContent();
+            }
+            //...
+        }        
+        ```
+
+        You should acces to the business logic via the service. This service is always injected to the controller using the constructor. Like this :
+
+        ``` csharp
+        private readonly INewValueService _newValueService;
+
+        public NewValueController(INewValueService newValueService)
+        {
+            _newValueService = newValueService;
+        }
+        ```
+
+    8. 
+        In order for the framework to interpret what you're injecting, inside the `Startup.cs` file, there's a method called `ConfigureServices`, where you can register your service like this 
+    
+        ``` csharp
+        services.AddTransient<INewValueService>(sp => new UserService(sp.GetRequiredService<WebApiCoreSeedContext>()));
+        ```
+
+    9. 
+        It's time to document your resource, fortunately, swashbuckle understands the documantation comments, and adds them to the json that SwaggerUi consumes. So, for every action that you perform on your resource, a comment like this needs to exist:
+
+        ``` csharp
+        /// <summary>
+        /// Gets a new value based on his id
+        /// </summary>
+        /// <param name="id" cref="Guid">Guid of the new value</param>
+        /// <response code="200">The the new that has the given id</response>
+        /// <response code="404">a new value with the given id was not found</response>
+        /// <response code="500">server error</response>
+        /// <return>A new value</return>
+        [HttpGet("id")]
+        public Task<IActionResult> Get(Guid id){...}
+        ``` 
+
+        In order to let swashbuckle understand the type of response you need to specify it with an attribute like this `
+        ``` csharp
+        /// <summary>
+        /// </summary>
+        [HttpGet("id")]
+        [ProducesResponseType(typeof(NewValue), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(ErrorDto), 500)]
+        public Task<IActionResult> Get(Guid id){...}
+        ```
+
+    10. Finally it's time to test, for this you need to create two test files, one in `WebApiCoreSeed.UnitTests/Services` to test the service, in this case the file should be called `NewValueServiceTest.cs`, and other in `WebApiCoreSeed.UnitTests/Api/Controllers` for the controller called `NewValueControllerTest.cs`.
 
 
 * ### Using a persistent database
