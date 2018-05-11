@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Net;
 using System.Threading.Tasks;
-using WebApiCoreSeed.WebApi.Controllers.Dtos;
+using WebApiCoreSeed.WebApi.Dtos;
 
 namespace WebApiCoreSeed.WebApi.Middleware
 {

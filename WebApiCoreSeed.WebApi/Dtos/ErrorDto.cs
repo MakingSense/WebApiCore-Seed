@@ -1,4 +1,4 @@
-namespace WebApiCoreSeed.WebApi.Controllers.Dtos
+namespace WebApiCoreSeed.WebApi.Dtos
 {
     /// <summary>
     /// Error data transfer object

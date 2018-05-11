@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using WebApiCoreSeed.Domain.Exceptions;
-using WebApiCoreSeed.WebApi.Controllers.Dtos;
+using WebApiCoreSeed.WebApi.Dtos;
 
 namespace WebApiCoreSeed.WebApi.Middleware
 {
