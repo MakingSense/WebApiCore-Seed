@@ -1,13 +1,13 @@
 # WebapiCore-seed [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
 
 ## Prerequisites
- * .Net core sdk
-    * [Instructions for the latest sdk](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.200-sdk-download.md)
- * A text processor / gui like
-    * [Visual Studio](https://www.visualstudio.com/es/downloads/)
-    * [Visual studio code](https://code.visualstudio.com/Download)
+* .Net core sdk
+* A text processor / gui
 
-    [Net core tools download page](https://www.microsoft.com/net/download/windows)
+### Download them
+* [For Windows](https://www.microsoft.com/net/download/windows/build)
+* [For Linux](https://www.microsoft.com/net/download/linux/build)
+* [For Mac](https://www.microsoft.com/net/download/macos/build)
 
 ## Getting started
 
@@ -145,12 +145,6 @@
         ```
 
     10. Finally it's time to test, for this you need to create two test files, one in `WebApiCoreSeed.UnitTests/Services` to test the service, in this case the file should be called `NewValueServiceTest.cs`, and other in `WebApiCoreSeed.UnitTests/Api/Controllers` for the controller called `NewValueControllerTest.cs`.
-
-
-* ### Using a persistent database
-
-* ### Deploying
-
 
 ## What uses
 
