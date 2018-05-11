@@ -1,6 +1,6 @@
 # WebapiCore-seed [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
 
-## Prequisites
+## Prerequisites
  * .Net core sdk
     * [Instructions for the latest sdk](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.200-sdk-download.md)
  * A text processor / gui like
@@ -18,7 +18,7 @@
 
         ![set as startup](https://i.imgur.com/fTbU51p.gif)
 
-    3. Now you just have to run it, pressing `F5` or the run button the top, if you use iisexpress configuration your app will be attached to the port `:4992`, if you use the excecutable, the port used will be `:4993`
+    3. Now you just have to run it, pressing `F5` or the run button the top, if you use iisexpress configuration your app will be attached to the port `:4992`, if you use the executable, the port used will be `:4993`
 
         ![Run it](https://i.imgur.com/8TuB31V.gif)
 
@@ -35,13 +35,13 @@
 
     5. Run `dotnet run` and wait, this would host the application on the :4993 port
 
-    6. Finnaly you can open a browser and navigate `localhost:4993/swagger` to check all the availdable endpoints
+    6. Finally you can open a browser and navigate `localhost:4993/swagger` to check all the available  endpoints
 
 ## Next steps 
 
 * ### Creating a new resource
 
-    1. Let's asume that you want a `NewValue` resource, So your first step is give it a model, inside `WebApiCoreSeed.Data/Models` folder, create a new file called `NewValue.cs`
+    1. Let's assume that you want a `NewValue` resource, so your first step is give it a model, inside `WebApiCoreSeed.Data/Models` folder, create a new file called `NewValue.cs`
 
     2. Inside the file add the namespace 
         ``` csharp
@@ -65,7 +65,7 @@
         finally if you want some initial data add it into `DatabaseSeed.cs` inside the `Initialize` method and before the `EnsureCreated()` but after the `SaveChanges()`
 
     6. 
-        Then you're gonna need a place to drop the bussines/domain logic. Inside `WebApiCoreSeed.Domain/Service` add a `NewValueService.cs` and into `WebApiCoreSeed.Domain/Service/Contracts` add a `INewValueService.cs`. 
+        Then you're going to need a place to drop the business/domain logic. Inside `WebApiCoreSeed.Domain/Service` add a `NewValueService.cs` and into `WebApiCoreSeed.Domain/Service/Contracts` add a `INewValueService.cs`. 
 
         Inside `INewValueService.cs` add the namespace `WebApiCoreSeed.Domain.Services.Interfaces` and define all the operations that NewValue performs inside an interface.
 
@@ -81,7 +81,7 @@
         ```
 
     7. 
-        On `WebApiCoreSeed.WebApi/Controllers` add a file with the name `NewValueController.cs` and the and create a class called `NewValueController` under the namespace `WebApiCoreSeed.WebApi.Controllers`.
+        On `WebApiCoreSeed.WebApi/Controllers` add a file with the name `NewValueController.cs`, create a class called `NewValueController` under the namespace `WebApiCoreSeed.WebApi.Controllers`.
 
         Before the class firm you need to specify the route prefix, we normally use the name of the resource with a `api/` prefix. The class should inherit form `Controller`, is a good practice that every method must have the verb defined as an attribute and always returns an `IActionResult`. Something like this:
         ``` csharp
@@ -99,7 +99,7 @@
         }        
         ```
 
-        You should acces to the business logic via the service. This service is always injected to the controller using the constructor. Like this :
+        You should access to the business logic via the service. The service is always injected via controller using the constructor. Like this:
 
         ``` csharp
         private readonly INewValueService _newValueService;
@@ -111,21 +111,21 @@
         ```
 
     8. 
-        In order for the framework to interpret what you're injecting, inside the `Startup.cs` file, there's a method called `ConfigureServices`, where you can register your service like this 
+        In order for the framework to interpret what you're injecting, inside the `Startup.cs` file, there's a method called `ConfigureServices`, where you can register your service like this:
     
         ``` csharp
         services.AddTransient<INewValueService>(sp => new UserService(sp.GetRequiredService<WebApiCoreSeedContext>()));
         ```
 
     9. 
-        It's time to document your resource, fortunately, swashbuckle understands the documantation comments, and adds them to the json that SwaggerUi consumes. So, for every action that you perform on your resource, a comment like this needs to exist:
+        It's time to document your resource, fortunately, swashbuckle understands the documentation comments, and adds them to the json that SwaggerUi consumes. So, for every action that you perform on your resource, a comment like this needs to exist:
 
         ``` csharp
         /// <summary>
         /// Gets a new value based on his id
         /// </summary>
         /// <param name="id" cref="Guid">Guid of the new value</param>
-        /// <response code="200">The the new that has the given id</response>
+        /// <response code="200">The new value that has the given id</response>
         /// <response code="404">a new value with the given id was not found</response>
         /// <response code="500">server error</response>
         /// <return>A new value</return>
@@ -166,7 +166,7 @@
 ## Architecture
 * DDD classic
     * Domain Services.
-    * Inversion of control using conventions .
+    * Inversion of control using conventions.
     * Autommaping for custom views decoupled from domain.
   
 ![demo](http://www.methodsandtools.com/archive/onion17.jpg)
