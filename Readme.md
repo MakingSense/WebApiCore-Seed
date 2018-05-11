@@ -3,7 +3,7 @@
 
 ## Prequisites
  * .Net core sdk
-    * [Instruction for the latest sdk](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.200-sdk-download.md)
+    * [Instructions for the latest sdk](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.200-sdk-download.md)
  * A text processor / gui like
     * [Visual Studio](https://www.visualstudio.com/es/downloads/)
     * [Visual studio code](https://code.visualstudio.com/Download)
@@ -16,9 +16,11 @@
     1. Open `WebApiCoreSeed.sln` located on the folder where the repository was downloaded
 
     2. If the WebApiCoreSeed.WebApi project is not selected as startup, just right click it and then click on `Set as StartUp Project` 
+
     ![set as startup](https://i.imgur.com/fTbU51p.gif)
 
-    3. Now you just have to run it, pressing `F5` or the run button the top, if you use iisexpress configuration your app will be attached to the port :4992, if you use the excecutable, the port used will be :4993
+    3. Now you just have to run it, pressing `F5` or the run button the top, if you use iisexpress configuration your app will be attached to the port `:4992`, if you use the excecutable, the port used will be `:4993`
+
     ![Run it](https://i.imgur.com/8TuB31V.gif)
 
     4. Now you just can open your favorite browser and navigate to `localhost:$Port/swagger` to see all the configured endpoints
