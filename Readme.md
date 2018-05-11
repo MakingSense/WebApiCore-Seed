@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
-# WebapiCore-seed
+# WebapiCore-seed [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
 
 ## Prequisites
  * .Net core sdk
@@ -8,7 +7,7 @@
     * [Visual Studio](https://www.visualstudio.com/es/downloads/)
     * [Visual studio code](https://code.visualstudio.com/Download)
 
-[Net core tools download page](https://www.microsoft.com/net/download/windows)
+    [Net core tools download page](https://www.microsoft.com/net/download/windows)
 
 ## Getting started
 
@@ -17,11 +16,11 @@
 
     2. If the WebApiCoreSeed.WebApi project is not selected as startup, just right click it and then click on `Set as StartUp Project` 
 
-    ![set as startup](https://i.imgur.com/fTbU51p.gif)
+        ![set as startup](https://i.imgur.com/fTbU51p.gif)
 
     3. Now you just have to run it, pressing `F5` or the run button the top, if you use iisexpress configuration your app will be attached to the port `:4992`, if you use the excecutable, the port used will be `:4993`
 
-    ![Run it](https://i.imgur.com/8TuB31V.gif)
+        ![Run it](https://i.imgur.com/8TuB31V.gif)
 
     4. Now you just can open your favorite browser and navigate to `localhost:$Port/swagger` to see all the configured endpoints
 
