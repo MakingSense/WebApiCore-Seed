@@ -3,6 +3,7 @@
 ## Prerequisites
 
 .NET Core SDK
+
 A text processor / gui
 
 ### Download them
