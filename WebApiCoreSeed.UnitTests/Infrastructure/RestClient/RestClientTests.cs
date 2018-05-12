@@ -74,8 +74,8 @@ namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
             Assert.Null(response.ErrorValue);
             Assert.Equal(HttpStatusCode.Created, response.HttpStatusCode);
             Assert.True(response.IsSuccessResult);
-            Assert.Equal(response.SuccessValue.Id, "test");
-            Assert.Equal(response.SuccessValue.Code, 5);
+            Assert.Equal("test", response.SuccessValue.Id);
+            Assert.Equal(5, response.SuccessValue.Code);
         }
 
         [Fact]
@@ -98,8 +98,8 @@ namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
             Assert.IsType<ErrorDto>(response.ErrorValue);
             Assert.Equal(HttpStatusCode.BadRequest, response.HttpStatusCode);
             Assert.False(response.IsSuccessResult);
-            Assert.Equal(response.ErrorValue.ErrorCode, 2);
-            Assert.Equal(response.ErrorValue.ErrorDescription, GenericErrorDescription);
+            Assert.Equal(2, response.ErrorValue.ErrorCode);
+            Assert.Equal(GenericErrorDescription, response.ErrorValue.ErrorDescription);
         }
 
         [Fact]
@@ -123,8 +123,8 @@ namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
             Assert.Null(response.ErrorValue);
             Assert.Equal(HttpStatusCode.Created, response.HttpStatusCode);
             Assert.True(response.IsSuccessResult);
-            Assert.Equal(response.SuccessValue.Id, "test");
-            Assert.Equal(response.SuccessValue.Code, 5);
+            Assert.Equal("test", response.SuccessValue.Id);
+            Assert.Equal(5, response.SuccessValue.Code);
         }
 
         [Fact]
@@ -147,8 +147,8 @@ namespace WebApiCoreSeed.UnitTests.Infrastructure.RestClient
             Assert.IsType<ErrorDto>(response.ErrorValue);
             Assert.Equal(HttpStatusCode.BadRequest, response.HttpStatusCode);
             Assert.False(response.IsSuccessResult);
-            Assert.Equal(response.ErrorValue.ErrorCode, 2);
-            Assert.Equal(response.ErrorValue.ErrorDescription, GenericErrorDescription);
+            Assert.Equal(2, response.ErrorValue.ErrorCode);
+            Assert.Equal(GenericErrorDescription, response.ErrorValue.ErrorDescription);
         }
     }
 }

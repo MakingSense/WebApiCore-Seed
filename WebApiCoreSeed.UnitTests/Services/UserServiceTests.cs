@@ -15,7 +15,7 @@ namespace WebApiCoreSeed.UnitTests.Services
         {
             // Arrange
             var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnUser");
             var createdUser =
                 new User
                 {
@@ -54,7 +54,7 @@ namespace WebApiCoreSeed.UnitTests.Services
         {
             // Arrange
             var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnNull");
             User user;
             using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
             {
