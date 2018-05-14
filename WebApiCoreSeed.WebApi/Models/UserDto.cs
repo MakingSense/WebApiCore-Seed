@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApiCoreSeed.WebApi.Dtos
+namespace WebApiCoreSeed.WebApi.Models
 {
     public class UserDto
     {
