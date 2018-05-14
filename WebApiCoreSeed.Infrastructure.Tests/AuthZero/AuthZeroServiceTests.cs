@@ -1,17 +1,17 @@
-﻿namespace WebApiCoreSeed.UnitTests.AuthZero
-{
-    using Auth0.Core;
-    using Auth0.Core.Exceptions;
-    using Auth0.ManagementApi;
-    using Auth0.ManagementApi.Clients;
-    using Auth0.ManagementApi.Models;
-    using Moq;
-    using System.Net;
-    using System.Threading.Tasks;
-    using WebApiCoreSeed.Infrastructure.AuthZero;
-    using WebApiCoreSeed.Infrastructure.Result;
-    using Xunit;
+﻿using Auth0.Core;
+using Auth0.Core.Exceptions;
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Clients;
+using Auth0.ManagementApi.Models;
+using Moq;
+using System.Net;
+using System.Threading.Tasks;
+using WebApiCoreSeed.Infrastructure.AuthZero;
+using WebApiCoreSeed.Infrastructure.Result;
+using Xunit;
 
+namespace WebApiCoreSeed.Infrastructure.Tests.AuthZero
+{
     public class AuthZeroServiceTests
     {
         [Fact]

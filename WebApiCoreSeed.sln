@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.WebApi", "We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Domain", "WebApiCoreSeed.Domain\WebApiCoreSeed.Domain.csproj", "{271EEE25-6BA2-4BF8-A782-94E6F2FCACA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiCoreSeed.UnitTests", "WebApiCoreSeed.UnitTests\WebApiCoreSeed.UnitTests.csproj", "{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Domain.Tests", "WebApiCoreSeed.Domain.Tests\WebApiCoreSeed.Domain.Tests.csproj", "{3DB5D275-1F20-42DA-8EA2-E1505CF10DEF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Infrastructure", "WebApiCoreSeed.Infrastructure\WebApiCoreSeed.Infrastructure.csproj", "{0BB5DD31-2AC0-40B0-A551-55E5D26EBA23}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.WebApi.Tests", "WebApiCoreSeed.WebApi.Tests\WebApiCoreSeed.WebApi.Tests.csproj", "{D151F52C-0466-482B-B1FF-8C1BF55EB34D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCoreSeed.Infrastructure.Tests", "WebApiCoreSeed.Infrastructure.Tests\WebApiCoreSeed.Infrastructure.Tests.csproj", "{D151F52C-0466-0067-B1FF-8C1BF55EB34D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +43,19 @@ Global
 		{0BB5DD31-2AC0-40B0-A551-55E5D26EBA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB5DD31-2AC0-40B0-A551-55E5D26EBA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB5DD31-2AC0-40B0-A551-55E5D26EBA23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D151F52C-0466-482B-B1FF-8C1BF55EB34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151F52C-0466-482B-B1FF-8C1BF55EB34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D151F52C-0466-482B-B1FF-8C1BF55EB34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D151F52C-0466-482B-B1FF-8C1BF55EB34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D151F52C-0466-0067-B1FF-8C1BF55EB34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151F52C-0466-0067-B1FF-8C1BF55EB34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D151F52C-0466-0067-B1FF-8C1BF55EB34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D151F52C-0466-0067-B1FF-8C1BF55EB34D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91B90A90-38D2-4FB7-B22A-90F9CD72EC84}
 	EndGlobalSection
 EndGlobal

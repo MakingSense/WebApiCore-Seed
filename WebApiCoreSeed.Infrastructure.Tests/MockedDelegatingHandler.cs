@@ -1,8 +1,8 @@
-﻿namespace WebApiCoreSeed.UnitTests.Infrastructure
-{
-    using System.Net.Http;
-    using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
+namespace WebApiCoreSeed.Infrastructure.Tests
+{
     public class MockedDelegatingHandler : DelegatingHandler
     {
         private readonly HttpResponseMessage _mockedResponseMessage;
