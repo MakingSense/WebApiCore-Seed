@@ -96,6 +96,7 @@ namespace WebApiCoreSeed.WebApi
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
+                //Sets swagger UI route on root, "GET {baseUrl}/ "
                 c.RoutePrefix = string.Empty;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiCoreSeed V1");
             });
