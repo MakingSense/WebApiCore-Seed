@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApiCoreSeed.Data.Models;
 using WebApiCoreSeed.Domain.Services.Interfaces;
-using WebApiCoreSeed.WebApi.Controllers.Dtos;
+using WebApiCoreSeed.WebApi.Models;
 using WebApiCoreSeed.WebApi.Filters;
 
 namespace WebApiCoreSeed.WebApi.Controllers
