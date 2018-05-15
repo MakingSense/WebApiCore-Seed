@@ -43,7 +43,7 @@ namespace WebApiCoreSeed.WebApi.Tests.Controllers
         #region Get tests
 
         [Fact]
-        public async void Get_ShouldReturnAnUser_WhenIdExists()
+        public async void Get_ShouldReturnAUser_WhenIdExists()
         {
             var userService = new Mock<IUserService>();
             var classUnderTest = new UserController(userService.Object);
