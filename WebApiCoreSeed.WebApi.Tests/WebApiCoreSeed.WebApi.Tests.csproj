@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApiCoreSeed.Domain\WebApiCoreSeed.Domain.csproj" />
     <ProjectReference Include="..\WebApiCoreSeed.WebApi\WebApiCoreSeed.WebApi.csproj" />
   </ItemGroup>
   
