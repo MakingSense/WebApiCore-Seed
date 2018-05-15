@@ -8,14 +8,16 @@ namespace WebApiCoreSeed.Data.Tests.EF
     public class DatabaseSeedTest
     {
         [Fact]
-        public async Task Initialize_ShouldAnCreateUser()
+        public async Task Initialize_ShouldCreateAnUser()
         {
             var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
             optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnUser");
-            var dbContext = new WebApiCoreSeedContext(optionsBuilder.Options);
-            DatabaseSeed.Initialize(dbContext);
+            using (var dbContext = new WebApiCoreSeedContext(optionsBuilder.Options))
+            {
+                DatabaseSeed.Initialize(dbContext);
 
-            Assert.Equal(1, await dbContext.Users.CountAsync());
+                Assert.Equal(1, await dbContext.Users.CountAsync());
+            }
         }
     }
 }
