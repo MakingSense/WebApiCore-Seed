@@ -8,7 +8,7 @@ namespace WebApiCoreSeed.Data.Tests.EF
     public class DatabaseSeedTest
     {
         [Fact]
-        public async Task Initialize_ShouldCreateAnUser()
+        public async Task Initialize_ShouldCreateAUser()
         {
             var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
             optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnUser");
