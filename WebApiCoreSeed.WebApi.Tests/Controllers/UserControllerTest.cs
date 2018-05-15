@@ -13,44 +13,29 @@ namespace WebApiCoreSeed.WebApi.Tests.Controllers
 {
     public class UserControllerTest
     {
-        #region Fields
-
-        private Mock<IUserService> _userService;
-
-        private UserController _classUnderTest;
-
-        #endregion
-
-        #region Constructors
-
-        public UserControllerTest()
-        {
-            _userService = new Mock<IUserService>();
-            _classUnderTest = new UserController(_userService.Object);
-        }
-
-        #endregion
-
         #region GetAll Tests
 
         [Fact]
         public async void GetAll_ShouldReturnAListOfUsers_WhenHasAtLeastOneUser()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var id = Guid.NewGuid();
             var users = new List<User>()
             {
                 GetADefaultUser(id)
             };
 
-            _userService.Setup(a => a.GetAsync()).Returns(Task.FromResult(users));
+            userService.Setup(a => a.GetAsync()).ReturnsAsync(users);
 
-            var result = await _classUnderTest.GetAll();
+            var result = await classUnderTest.GetAll();
 
             Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.NotNull(okResult);
             Assert.Contains(okResult.Value as List<User>, a => a.Id == id);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         #endregion
@@ -58,33 +43,39 @@ namespace WebApiCoreSeed.WebApi.Tests.Controllers
         #region Get tests
 
         [Fact]
-        public async void Get_ShouldReturnAnUser_WhenIdExist()
+        public async void Get_ShouldReturnAnUser_WhenIdExists()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var id = Guid.NewGuid();
             var user = GetADefaultUser(id);
 
-            _userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
-                .Returns(Task.FromResult(user));
+            userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
+                .ReturnsAsync(user);
 
-            var result = await _classUnderTest.Get(id);
+            var result = await classUnderTest.Get(id);
 
             Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.True((okResult.Value as User).Id == id);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         [Fact]
-        public async void Get_ShouldReturnNotFound_WhenIdNotExist()
+        public async void Get_ShouldReturnNotFound_WhenIdNotExists()
         {
-            var id = Guid.NewGuid();
-            _userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
-                .Returns(Task.FromResult<User>(null));
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
 
-            var result = await _classUnderTest.Get(id);
+            var id = Guid.NewGuid();
+            userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
+                .ReturnsAsync(null as User);
+
+            var result = await classUnderTest.Get(id);
 
             Assert.IsType<NotFoundResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         #endregion
@@ -94,46 +85,56 @@ namespace WebApiCoreSeed.WebApi.Tests.Controllers
         [Fact]
         public async void Create_ShouldReturnNoContent_WhenUserIsOk()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var userDto = GetADefaultUserDto();
 
-            _userService.Setup(a => a.CreateAsync(It.Is<User>(u =>
+            userService.Setup(a => a.CreateAsync(It.Is<User>(u =>
                   u.Email == userDto.Email &&
                   u.FirstName == userDto.FirstName &&
                   u.LastName == userDto.LastName &&
                   u.UserName == userDto.UserName)))
-                  .Returns(Task.FromResult(1));
+                  .ReturnsAsync(1);
 
-            var result = await _classUnderTest.Create(userDto);
+            var result = await classUnderTest.Create(userDto);
 
             Assert.IsType<NoContentResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         [Fact]
         public async void Create_ShouldReturnBadRequest_WhenInputIsNull()
         {
-            var result = await _classUnderTest.Create(null);
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
+            var result = await classUnderTest.Create(null);
 
             Assert.IsType<BadRequestResult>(result);
+            userService.VerifyAll();
         }
 
         [Fact]
         public async void Create_ShouldReturnNotFound_WhenNoUserWasNotCreated()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var userDto = GetADefaultUserDto();
 
-            _userService.Setup(a => a.CreateAsync(It.Is<User>(
+            userService.Setup(a => a.CreateAsync(It.Is<User>(
                 u =>
                     u.Email == userDto.Email &&
                     u.FirstName == userDto.FirstName &&
                     u.LastName == userDto.LastName &&
                     u.UserName == userDto.UserName)))
-                .Returns(Task.FromResult(0));
+                .ReturnsAsync(0);
 
-            var result = await _classUnderTest.Create(userDto);
+            var result = await classUnderTest.Create(userDto);
 
             Assert.IsType<NotFoundResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         #endregion
@@ -143,85 +144,101 @@ namespace WebApiCoreSeed.WebApi.Tests.Controllers
         [Fact]
         public async void Update_ShouldReturnNoContent_WhenUserIsOk()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+            
             var id = Guid.NewGuid();
             var userDto = GetADefaultUserDto();
 
-            _userService.Setup(a => a.UpdateAsync(It.Is<User>(
+            userService.Setup(a => a.UpdateAsync(It.Is<User>(
                 u =>
                     u.Id == id &&
                     u.Email == userDto.Email &&
                     u.FirstName == userDto.FirstName &&
                     u.LastName == userDto.LastName &&
                     u.UserName == userDto.UserName)))
-                .Returns(Task.FromResult(1));
+                .ReturnsAsync(1);
 
-            var result = await _classUnderTest.Update(id, userDto);
+            var result = await classUnderTest.Update(id, userDto);
 
             Assert.IsType<NoContentResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         [Fact]
         public async void Update_ShouldReturnBadRequest_WhenUserIsNull()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+            
             var id = Guid.NewGuid();
 
-            var result = await _classUnderTest.Update(id, null);
+            var result = await classUnderTest.Update(id, null);
 
             Assert.IsType<BadRequestResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         [Fact]
-        public async void Update_ShouldReturnNotFound_WhenUserNotExist()
+        public async void Update_ShouldReturnNotFound_WhenUserNotExists()
         {
+            
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var id = Guid.NewGuid();
             var userDto = GetADefaultUserDto();
 
-            _userService.Setup(a => a.UpdateAsync(It.Is<User>(
+            userService.Setup(a => a.UpdateAsync(It.Is<User>(
                 u =>
                     u.Id == id &&
                     u.Email == userDto.Email &&
                     u.FirstName == userDto.FirstName &&
                     u.LastName == userDto.LastName &&
                     u.UserName == userDto.UserName)))
-                .Returns(Task.FromResult(0));
+                .ReturnsAsync(0);
 
-            var result = await _classUnderTest.Update(id, userDto);
+            var result = await classUnderTest.Update(id, userDto);
 
             Assert.IsType<NotFoundResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
         #endregion
 
         #region Delete Tests
 
         [Fact]
-        public async void Delete_WhenIdExist_ShouldReturnNoContent()
+        public async void Delete_WhenIdExists_ShouldReturnNoContent()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var id = Guid.NewGuid();
 
-            _userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
-                .Returns(Task.FromResult(1));
+            userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
+                .ReturnsAsync(1);
 
-            var result = await _classUnderTest.Delete(id);
+            var result = await classUnderTest.Delete(id);
 
             Assert.IsType<NoContentResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         [Fact]
-        public async void Delete_WhenIdNotExist_ShouldReturnNotFound()
+        public async void Delete_WhenIdNotExists_ShouldReturnNotFound()
         {
+            var userService = new Mock<IUserService>();
+            var classUnderTest = new UserController(userService.Object);
+
             var id = Guid.NewGuid();
 
-            _userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
-                .Returns(Task.FromResult(0));
+            userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
+                .ReturnsAsync(0);
 
-            var result = await _classUnderTest.Delete(id);
+            var result = await classUnderTest.Delete(id);
 
             Assert.IsType<NotFoundResult>(result);
-            _userService.VerifyAll();
+            userService.VerifyAll();
         }
 
         #endregion
