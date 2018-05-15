@@ -29,7 +29,7 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Users
 
         public UserIntegrationTest()
         {
-            SwaggerXmlFaker.Fake();
+            FileFaker.Fake();
 
             var builder = new WebHostBuilder()
                 .UseEnvironment("development")
