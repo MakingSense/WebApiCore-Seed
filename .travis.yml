@@ -8,3 +8,4 @@ script:
   - dotnet build --configuration release
   - dotnet test WebApiCoreSeed.Domain.Tests/WebApiCoreSeed.Domain.Tests.csproj --configuration release
   - dotnet test WebApiCoreSeed.Infrastructure.Tests/WebApiCoreSeed.Infrastructure.Tests.csproj --configuration release
+  - dotnet test WebApiCoreSeed.WebApi.Tests/WebApiCoreSeed.WebApi.Tests.csproj --configuration release
