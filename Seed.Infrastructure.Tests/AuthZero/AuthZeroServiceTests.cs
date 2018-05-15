@@ -4,13 +4,13 @@ using Auth0.ManagementApi;
 using Auth0.ManagementApi.Clients;
 using Auth0.ManagementApi.Models;
 using Moq;
+using Seed.Infrastructure.AuthZero;
+using Seed.Infrastructure.Result;
 using System.Net;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Infrastructure.AuthZero;
-using WebApiCoreSeed.Infrastructure.Result;
 using Xunit;
 
-namespace WebApiCoreSeed.Infrastructure.Tests.AuthZero
+namespace Seed.Infrastructure.Tests.AuthZero
 {
     public class AuthZeroServiceTests
     {

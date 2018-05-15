@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Seed.Data.EF;
+using Seed.Data.Models;
+using Seed.Domain.Services;
 using System;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.EF;
-using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.Domain.Services;
 using Xunit;
 
-namespace WebApiCoreSeed.Domain.Tests
+namespace Seed.Domain.Tests
 {
     public class UserServiceTests
     {

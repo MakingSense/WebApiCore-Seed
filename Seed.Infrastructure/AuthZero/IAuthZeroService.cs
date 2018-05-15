@@ -1,8 +1,8 @@
 ﻿using Auth0.Core;
+using Seed.Infrastructure.Result;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Infrastructure.Result;
 
-namespace WebApiCoreSeed.Infrastructure.AuthZero
+namespace Seed.Infrastructure.AuthZero
 {
     /// <summary>
     /// Service responsible for any interaction with Auth0 API

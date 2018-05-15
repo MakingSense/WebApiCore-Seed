@@ -1,7 +1,7 @@
-﻿using System.Net;
-using WebApiCoreSeed.Infrastructure.Result;
+﻿using Seed.Infrastructure.Result;
+using System.Net;
 
-namespace WebApiCoreSeed.Infrastructure.RestClient
+namespace Seed.Infrastructure.RestClient
 {
     /// <summary>
     /// Simplified REST response object including content and Http status code

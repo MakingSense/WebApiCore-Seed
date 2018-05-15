@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
-namespace WebApiCoreSeed.Domain.Pagination
+namespace Seed.Domain.Pagination
 {
     /// <summary> Wrapper for results exposed as pages </summary>
     /// <typeparam name="T"> Object type contained inside page's collection </typeparam>

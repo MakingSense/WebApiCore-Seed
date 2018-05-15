@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace WebApiCoreSeed.Infrastructure.RestClient
+namespace Seed.Infrastructure.RestClient
 {
     /// <summary>
     /// Interface to provide an easy way to perform REST requests

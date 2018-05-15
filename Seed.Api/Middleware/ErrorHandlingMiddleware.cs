@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Seed.Api.Models;
+using Seed.Domain.Exceptions;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Domain.Exceptions;
-using WebApiCoreSeed.WebApi.Models;
 
-namespace WebApiCoreSeed.WebApi.Middleware
+namespace Seed.Api.Middleware
 {
     /// <summary>
     /// Middleware responsible for catching unhandled exceptions and provide useful/meaningful responses to API consumers

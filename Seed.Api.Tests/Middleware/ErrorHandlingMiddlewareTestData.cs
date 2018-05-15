@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Seed.Domain.Exceptions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using WebApiCoreSeed.Domain.Exceptions;
 
-namespace WebApiCoreSeed.WebApi.Tests.Middleware
+namespace Seed.Api.Tests.Middleware
 {
     public class ErrorHandlingMiddlewareTestData : IEnumerable<object[]>
     {

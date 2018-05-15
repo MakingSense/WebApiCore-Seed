@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Seed.Api.Models;
 using System.Net;
 using System.Threading.Tasks;
-using WebApiCoreSeed.WebApi.Models;
 
-namespace WebApiCoreSeed.WebApi.Middleware
+namespace Seed.Api.Middleware
 {
     /// <summary>
     /// Middleware to handle global authorization policies

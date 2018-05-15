@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Seed.Api.Filters;
+using Seed.Api.Models;
+using Seed.Data.Models;
+using Seed.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.Domain.Services.Interfaces;
-using WebApiCoreSeed.WebApi.Models;
-using WebApiCoreSeed.WebApi.Filters;
 
-namespace WebApiCoreSeed.WebApi.Controllers
+namespace Seed.Api.Controllers
 {
     [Route("api/users")]
     [Produces("Application/json")]

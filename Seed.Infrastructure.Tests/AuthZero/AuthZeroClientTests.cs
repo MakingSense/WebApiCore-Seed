@@ -1,14 +1,14 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Auth0.AuthenticationApi.Models;
+﻿using Auth0.AuthenticationApi.Models;
 using Auth0.Core;
 using Auth0.Core.Exceptions;
-using WebApiCoreSeed.Infrastructure.AuthZero;
-using WebApiCoreSeed.Infrastructure.RestClient;
 using Moq;
+using Seed.Infrastructure.AuthZero;
+using Seed.Infrastructure.RestClient;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace WebApiCoreSeed.Infrastructure.Tests.AuthZero
+namespace Seed.Infrastructure.Tests.AuthZero
 {
     public class AuthZeroClientTests
     {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using WebApiCoreSeed.Data.Enums;
+﻿using Microsoft.AspNetCore.Authorization;
+using Seed.Data.Enums;
+using System;
 
-namespace WebApiCoreSeed.WebApi.Authorization
+namespace Seed.Api.Authorization
 {
     public class AuthorizationPolicies : IAuthorizationPolicies
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApiCoreSeed.Data.Models;
+using Seed.Data.Models;
 
-namespace WebApiCoreSeed.Data.EF
+namespace Seed.Data.EF
 {
     public class WebApiCoreSeedContext : DbContext
     {

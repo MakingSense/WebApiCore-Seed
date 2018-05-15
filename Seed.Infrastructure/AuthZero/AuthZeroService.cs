@@ -1,11 +1,10 @@
 ﻿using Auth0.Core;
 using Auth0.Core.Exceptions;
 using Auth0.ManagementApi.Models;
-using Newtonsoft.Json;
+using Seed.Infrastructure.Result;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Infrastructure.Result;
 
-namespace WebApiCoreSeed.Infrastructure.AuthZero
+namespace Seed.Infrastructure.AuthZero
 {
     public class AuthZeroService : IAuthZeroService
     {

@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApiCoreSeed.Infrastructure.RestClient
+namespace Seed.Infrastructure.RestClient
 {
     /// <summary>
     /// <see cref="IRestClient"/> implementation relying on <see cref="HttpClient"/> and <see cref="Newtonsoft.Json.JsonConvert"/> to easily perform REST request and parse JSON responses

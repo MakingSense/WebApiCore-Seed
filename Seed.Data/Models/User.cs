@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Data.Models
+﻿namespace Seed.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 

@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Domain.Pagination
+﻿namespace Seed.Domain.Pagination
 {
     using System;
 

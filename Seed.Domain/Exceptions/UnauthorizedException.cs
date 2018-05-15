@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApiCoreSeed.Domain.Exceptions
+namespace Seed.Domain.Exceptions
 {
     /// <summary>
     /// Exception thrown when the current role/user does not satisfy authorization requirements

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Seed.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.Models;
 
-namespace WebApiCoreSeed.Domain.Services.Interfaces
+namespace Seed.Domain.Services.Interfaces
 {
     /// <summary>
     /// Service responsible of handling users

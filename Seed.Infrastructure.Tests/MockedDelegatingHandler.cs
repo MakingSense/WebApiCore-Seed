@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Infrastructure.Tests
+﻿namespace Seed.Infrastructure.Tests
 {
     using System.Net.Http;
     using System.Threading.Tasks;

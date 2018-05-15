@@ -2,12 +2,12 @@
 using Auth0.Core;
 using Auth0.Core.Exceptions;
 using Auth0.ManagementApi;
+using Seed.Infrastructure.RestClient;
+using Seed.Infrastructure.Result;
 using System;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Infrastructure.RestClient;
-using WebApiCoreSeed.Infrastructure.Result;
 
-namespace WebApiCoreSeed.Infrastructure.AuthZero
+namespace Seed.Infrastructure.AuthZero
 {
     public class AuthZeroClient : IAuthZeroClient
     {

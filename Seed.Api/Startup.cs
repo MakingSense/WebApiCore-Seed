@@ -1,25 +1,25 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Seed.Api.Authorization;
+using Seed.Api.Filters;
+using Seed.Api.Middleware;
+using Seed.Data.EF;
+using Seed.Domain.Services;
+using Seed.Domain.Services.Interfaces;
+using Seed.Infrastructure.AuthZero;
+using Seed.Infrastructure.RestClient;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using WebApiCoreSeed.Data.EF;
-using WebApiCoreSeed.Domain.Services;
-using WebApiCoreSeed.Domain.Services.Interfaces;
-using WebApiCoreSeed.Infrastructure.AuthZero;
-using WebApiCoreSeed.Infrastructure.RestClient;
-using WebApiCoreSeed.WebApi.Authorization;
-using WebApiCoreSeed.WebApi.Filters;
-using WebApiCoreSeed.WebApi.Middleware;
 
-namespace WebApiCoreSeed.WebApi
+namespace Seed.Api
 {
     public class Startup
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApiCoreSeed.Data.Models
+namespace Seed.Data.Models
 {
     public class BaseEntity
     {

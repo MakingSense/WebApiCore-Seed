@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Seed.Api.Controllers;
+using Seed.Api.Models;
+using Seed.Data.Models;
+using Seed.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.Domain.Services.Interfaces;
-using WebApiCoreSeed.WebApi.Controllers;
-using WebApiCoreSeed.WebApi.Models;
 using Xunit;
 
-namespace WebApiCoreSeed.WebApi.Tests.Controllers
+namespace Seed.Api.Tests.Controllers
 {
     public class UserControllerTest
     {

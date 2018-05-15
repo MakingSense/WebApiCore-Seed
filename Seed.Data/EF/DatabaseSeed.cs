@@ -1,8 +1,8 @@
-﻿namespace WebApiCoreSeed.Data.EF
+﻿namespace Seed.Data.EF
 {
+    using Seed.Data.Models;
     using System;
     using System.Linq;
-    using WebApiCoreSeed.Data.Models;
 
     /// <summary>
     /// Helper class to seed sample data into a <see cref="WebApiCoreSeedContext"/>

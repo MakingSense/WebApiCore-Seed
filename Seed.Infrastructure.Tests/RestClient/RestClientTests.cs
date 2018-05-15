@@ -1,11 +1,11 @@
-namespace WebApiCoreSeed.Infrastructure.Tests.RestClient
+namespace Seed.Infrastructure.Tests.RestClient
 {
+    using Seed.Infrastructure.RestClient;
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using WebApiCoreSeed.Infrastructure.RestClient;
     using Xunit;
 
     public class RestClientTests

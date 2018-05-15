@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Data.Enums
+﻿namespace Seed.Data.Enums
 {
     public enum AuthorizationRoles
     {

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApiCoreSeed.WebApi.Middleware
+namespace Seed.Api.Middleware
 {
     /// <summary>
     /// Middleware to handle global User Actions

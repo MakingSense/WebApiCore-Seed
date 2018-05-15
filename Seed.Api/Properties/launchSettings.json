@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WebApiCoreSeed.WebApi": {
+    "Seed.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

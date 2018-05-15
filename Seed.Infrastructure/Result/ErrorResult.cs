@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Infrastructure.Result
+﻿namespace Seed.Infrastructure.Result
 {
     /// <summary>
     /// Multi-purpose wrapper for generic error response with code+description structure

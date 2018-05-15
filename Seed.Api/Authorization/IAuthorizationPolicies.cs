@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
 
-namespace WebApiCoreSeed.WebApi.Authorization
+namespace Seed.Api.Authorization
 {
     /// <summary>
     /// Set of authorization policies defined for WebApiCoreSeed

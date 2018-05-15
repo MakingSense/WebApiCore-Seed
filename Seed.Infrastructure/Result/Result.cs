@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Infrastructure.Result
+﻿namespace Seed.Infrastructure.Result
 {
     /// <summary>
     /// Multi-purpose wrapper for result objects with success and error results.

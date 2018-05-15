@@ -1,8 +1,8 @@
-using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
-namespace WebApiCoreSeed.WebApi
+namespace Seed.Api
 {
     public class Program
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Seed.Data.EF;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.EF;
 using Xunit;
 
-namespace WebApiCoreSeed.Data.Tests.EF
+namespace Seed.Data.Tests.EF
 {
     public class DatabaseSeedTest
     {

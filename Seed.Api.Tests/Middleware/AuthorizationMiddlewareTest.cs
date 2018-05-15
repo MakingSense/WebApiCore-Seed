@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
+using Seed.Api.Middleware;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebApiCoreSeed.WebApi.Middleware;
 using Xunit;
 
-namespace WebApiCoreSeed.WebApi.Tests.Middleware
+namespace Seed.Api.Tests.Middleware
 {
     public class AuthorizationMiddlewareTest 
     {

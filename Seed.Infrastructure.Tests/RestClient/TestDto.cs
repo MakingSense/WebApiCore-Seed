@@ -1,4 +1,4 @@
-﻿namespace WebApiCoreSeed.Infrastructure.Tests.RestClient
+﻿namespace Seed.Infrastructure.Tests.RestClient
 {
     public class TestDto
     {

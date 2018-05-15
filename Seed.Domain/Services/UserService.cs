@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Seed.Data.EF;
+using Seed.Data.Models;
+using Seed.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.EF;
-using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.Domain.Services.Interfaces;
 
-namespace WebApiCoreSeed.Domain.Services
+namespace Seed.Domain.Services
 {
     /// <inheritdoc/>
     public class UserService : IUserService

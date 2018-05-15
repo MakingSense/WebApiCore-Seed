@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Moq;
+using Seed.Api.Middleware;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using WebApiCoreSeed.WebApi.Middleware;
 using Xunit;
 
-namespace WebApiCoreSeed.WebApi.Tests.Middleware
+namespace Seed.Api.Tests.Middleware
 {
     public class ErrorHandlingMiddlewareTest
     {

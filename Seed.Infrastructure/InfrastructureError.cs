@@ -1,6 +1,6 @@
-using WebApiCoreSeed.Infrastructure.Result;
+using Seed.Infrastructure.Result;
 
-namespace WebApiCoreSeed.Infrastructure
+namespace Seed.Infrastructure
 {
     internal static class InfrastructureError
     {
