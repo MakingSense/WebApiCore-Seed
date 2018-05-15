@@ -6,7 +6,7 @@ using WebApiCoreSeed.Data.Models;
 using WebApiCoreSeed.Domain.Services;
 using Xunit;
 
-namespace WebApiCoreSeed.UnitTests.Services
+namespace WebApiCoreSeed.Domain.Tests
 {
     public class UserServiceTests
     {
