@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Seed.Api.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using Seed.Api.Filters;
 using Seed.Api.Models;
 using Seed.Data.Models;
