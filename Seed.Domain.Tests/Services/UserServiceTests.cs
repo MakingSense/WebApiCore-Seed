@@ -16,8 +16,7 @@ namespace Seed.Domain.Tests
         public async Task GetByIdAsync_ShouldReturnUser()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnUser");
+            var optionsBuilder = DbContextBuilder();
             var createdUser = GetADefaultUser();
 
             User retrievedUser = null;
@@ -47,8 +46,7 @@ namespace Seed.Domain.Tests
         public async Task GetByIdAsync_ShouldReturnNull()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("GetByIdAsync_ShouldReturnNull");
+            var optionsBuilder = DbContextBuilder("GetByIdAsync_ShouldReturnNull");
             User user;
             using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
             {
@@ -70,8 +68,7 @@ namespace Seed.Domain.Tests
         public async void Delete_ShouldDeleteUser()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("Delete_ShouldDeleteUser");
+            var optionsBuilder = DbContextBuilder("Delete_ShouldDeleteUser");
             var createdUser = GetADefaultUser();
 
             int affectedRows;
@@ -104,8 +101,7 @@ namespace Seed.Domain.Tests
         public async void Delete_UserNotFound()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("Delete_UserNotFound");
+            var optionsBuilder = DbContextBuilder("Delete_UserNotFound");
             int affectedRows;
             using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
             {
@@ -127,10 +123,8 @@ namespace Seed.Domain.Tests
         public async void Update_ShouldUpdateIfUserExists()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("Update_ShouldUpdateIfUserExists");
+            var optionsBuilder = DbContextBuilder("Update_ShouldUpdateIfUserExists");
             var createdUser = GetADefaultUser();
-
             int affectedRows;
             using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
             {
@@ -154,8 +148,7 @@ namespace Seed.Domain.Tests
         public async void Update_ShouldReturnZeroIfUserNotExists()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("Update_ShouldReturnZeroIfUserNotExists");
+            var optionsBuilder = DbContextBuilder("Update_ShouldReturnZeroIfUserNotExists");
             var createdUser = GetADefaultUser();
             int affectedRows;
             using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
@@ -178,8 +171,7 @@ namespace Seed.Domain.Tests
         public async void Create_ShoulReturnOneIfCreated()
         {
             // Arrange
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase("Create_ShoulReturnOneIfCreated");
+            var optionsBuilder = DbContextBuilder("Create_ShoulReturnOneIfCreated");
             var createdUser = GetADefaultUser();
 
             int affectedRows;
@@ -218,6 +210,12 @@ namespace Seed.Domain.Tests
             };
         }
 
+        private static DbContextOptionsBuilder DbContextBuilder(string name = "default")
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
+            optionsBuilder.UseInMemoryDatabase(name);
+            return optionsBuilder;
+        }
         #endregion
     }
 }
