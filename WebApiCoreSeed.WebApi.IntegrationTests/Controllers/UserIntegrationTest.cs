@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -11,34 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApiCoreSeed.Data.EF;
 using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.WebApi.IntegrationTests.Fake;
-using WebApiCoreSeed.WebApi.IntegrationTests.Users.TestData;
+using WebApiCoreSeed.WebApi.IntegrationTests.Controllers.TestData;
+using WebApiCoreSeed.WebApi.IntegrationTests.Generics;
 using WebApiCoreSeed.WebApi.Models;
 using Xunit;
 
-namespace WebApiCoreSeed.WebApi.IntegrationTests.Users
+namespace WebApiCoreSeed.WebApi.IntegrationTests.Controllers
 {
-    public class UserIntegrationTest
+    public class UserIntegrationTest : IClassFixture<ApiTestFixture>
     {
         private const string ResouceUri = "api/users/";
 
-        private readonly TestServer _server;
         private readonly HttpClient _client;
-
         private readonly DbContextOptions<WebApiCoreSeedContext> _dbContextOptions;
 
-        public UserIntegrationTest()
+        public UserIntegrationTest(ApiTestFixture fixture)
         {
-            FileFaker.Fake();
-
-            var builder = new WebHostBuilder()
-                .UseEnvironment("development")
-                .UseStartup<Startup>();
-
-            _server = new TestServer(builder);
-            _client = _server.CreateClient();
-            _dbContextOptions = _server.Host.Services
-                .GetService(typeof(DbContextOptions<WebApiCoreSeedContext>)) as DbContextOptions<WebApiCoreSeedContext>;
+            _client = fixture.Client;
+            _dbContextOptions = fixture.DbContextOptions;
         }
 
         #region Get Tests
@@ -50,12 +38,8 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Users
             result.EnsureSuccessStatusCode();
 
             var users = JsonConvert.DeserializeObject<List<User>>(await result.Content.ReadAsStringAsync());
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(users);
-
-            using (var dbcontext = CreateContext())
-            {
-                Assert.True(dbcontext.Users.Any(a => users.Any(s => a.Id == s.Id)));
-            }
         }
 
         [Fact]
@@ -64,7 +48,7 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Users
             Guid guid;
             using (var dbcontext = CreateContext())
             {
-                guid = dbcontext.Users.First().Id;
+                guid = (await dbcontext.Users.FirstAsync()).Id;
             }
             var request = ResouceUri + guid.ToString();
 

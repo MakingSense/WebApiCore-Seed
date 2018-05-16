@@ -23,15 +23,15 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Fake
             var file = new FileInfo(path);
             if (!file.Exists)
             {
-                using (var fs = file.Create())
+                using (var fileStream = file.Create())
                 {
-                    using (var asd = new StreamWriter(fs))
+                    using (var streamWriter = new StreamWriter(fileStream))
                     {
-                        asd.WriteLine(content);
-                        asd.Close();
+                        streamWriter.WriteLine(content);
+                        streamWriter.Close();
                     }
 
-                    fs.Close();
+                    fileStream.Close();
                 }
             }
         }
