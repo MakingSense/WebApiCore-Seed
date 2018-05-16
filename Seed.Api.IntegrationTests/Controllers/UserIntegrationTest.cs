@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Seed.Api.IntegrationTests.Controllers.TestData;
+using Seed.Api.IntegrationTests.Generics;
+using Seed.Api.Models;
+using Seed.Data.EF;
+using Seed.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +12,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WebApiCoreSeed.Data.EF;
-using WebApiCoreSeed.Data.Models;
-using WebApiCoreSeed.WebApi.IntegrationTests.Controllers.TestData;
-using WebApiCoreSeed.WebApi.IntegrationTests.Generics;
-using WebApiCoreSeed.WebApi.Models;
 using Xunit;
 
-namespace WebApiCoreSeed.WebApi.IntegrationTests.Controllers
+namespace Seed.Api.IntegrationTests.Controllers
 {
     public class UserIntegrationTest : IClassFixture<ApiTestFixture>
     {
@@ -129,6 +129,22 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Controllers
             using (var dbcontext = CreateContext())
             {
                 dbUser = dbcontext.Users.FirstOrDefault();
+
+                if(dbUser == null)
+                {
+                    dbUser = (await dbcontext.Users.AddAsync(new User
+                    {
+                        Email = "anemail@email.com",
+                        CreatedBy = "creator",
+                        CreatedOn = DateTime.Now,
+                        FirstName = "firstName",
+                        Id = Guid.NewGuid(),
+                        LastName = "lastName",
+                        UserName = "userName"
+                    })).Entity;
+
+                    await dbcontext.SaveChangesAsync();
+                }
             }
 
             var user = new UserDto()

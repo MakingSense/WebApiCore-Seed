@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Seed.Api.IntegrationTests.Fake;
+using Seed.Data.EF;
+using System;
 using System.Net.Http;
-using WebApiCoreSeed.Data.EF;
-using WebApiCoreSeed.WebApi.IntegrationTests.Fake;
 
-namespace WebApiCoreSeed.WebApi.IntegrationTests.Generics
+namespace Seed.Api.IntegrationTests.Generics
 {
-    public class ApiTestFixture
+    public class ApiTestFixture : IDisposable
     {
+        private readonly TestServer _server;
+
         public ApiTestFixture()
         {
             FileFaker.Fake();
@@ -17,14 +20,20 @@ namespace WebApiCoreSeed.WebApi.IntegrationTests.Generics
                 .UseEnvironment("development")
                 .UseStartup<Startup>();
 
-            var server = new TestServer(builder);
-            Client = server.CreateClient();
-            DbContextOptions = server.Host.Services
+            _server = new TestServer(builder);
+            Client = _server.CreateClient();
+            DbContextOptions = _server.Host.Services
                 .GetService(typeof(DbContextOptions<WebApiCoreSeedContext>)) as DbContextOptions<WebApiCoreSeedContext>;
         }  
 
         public HttpClient Client { get; }
 
         public DbContextOptions<WebApiCoreSeedContext> DbContextOptions { get; }
+
+        public void Dispose()
+        {
+            Client.Dispose();
+            _server.Dispose();
+        }
     }
 }

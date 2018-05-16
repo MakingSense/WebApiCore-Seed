@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace WebApiCoreSeed.WebApi.IntegrationTests.Controllers.TestData
+namespace Seed.Api.IntegrationTests.Controllers.TestData
 {
     public class UserBadRequestTestData : IEnumerable<object[]>
     {

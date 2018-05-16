@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace WebApiCoreSeed.WebApi.IntegrationTests.Fake
+namespace Seed.Api.IntegrationTests.Fake
 {
     public static class FileFaker
     {
