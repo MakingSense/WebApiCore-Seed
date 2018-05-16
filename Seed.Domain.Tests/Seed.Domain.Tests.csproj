@@ -5,6 +5,11 @@
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="1.2.0" />
