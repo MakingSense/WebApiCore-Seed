@@ -160,7 +160,7 @@ nCrunchTemp*
 .vscode
 
 #coverlet coverage files
-WebApiCoreSeed.UnitTests/coverage.xml
+coverage.xml
 
 #sonar qube auto generated files
 .sonarqube
