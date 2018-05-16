@@ -18,7 +18,7 @@ A text processor / gui
 
 1. Open `WebApiCoreSeed.sln` located on the folder where the repository was downloaded
 
-2. If the WebApiCoreSeed.WebApi project is not selected as startup, just right click it and then click on `Set as StartUp Project` 
+2. If the Seed.Api project is not selected as startup, just right click it and then click on `Set as StartUp Project` 
 
     ![set as startup](https://i.imgur.com/fTbU51p.gif)
 
@@ -36,7 +36,7 @@ A text processor / gui
 
 3. Run `dotnet restore` on the integrated terminal, to install the dependencies of the project
 
-4. Go to `WebApiCoreSeed.WebApi` folder using `cd` command
+4. Go to `Seed.Api` folder using `cd` command
 
 5. Run `dotnet run` and wait, this would host the application on the :4993 port
 
