@@ -11,8 +11,9 @@ namespace Seed.Infrastructure.AuthZero
 {
     public class AuthZeroClient : IAuthZeroClient
     {
-        private readonly IRestClient _restClient;
+        private const string TokenUri = "/oauth/token";
 
+        private readonly IRestClient _restClient;
         private readonly string _clientId;
         private readonly string _authZeroSecret;
         private readonly string _domain;
@@ -63,7 +64,6 @@ namespace Seed.Infrastructure.AuthZero
 
         private async Task<Result<AuthZeroToken, ErrorResult>> RetrieveNewToken()
         {
-            var tokenUri = new Uri("/oauth/token");
             var bodyParameters = new
             {
                 grant_type = "client_credentials",
@@ -74,7 +74,7 @@ namespace Seed.Infrastructure.AuthZero
 
             try
             {
-                var response = await _restClient.PostAsync<AccessToken, ApiError>(tokenUri.ToString(), bodyParameters);
+                var response = await _restClient.PostAsync<AccessToken, ApiError>(TokenUri, bodyParameters);
                 return response.IsSuccessResult ?
                     new Result<AuthZeroToken, ErrorResult>(new AuthZeroToken(response.SuccessValue.AccessToken, response.SuccessValue.ExpiresIn)) :
                     new Result<AuthZeroToken, ErrorResult>(new ErrorResult(response.ErrorValue.ErrorCode, response.ErrorValue.Message));
