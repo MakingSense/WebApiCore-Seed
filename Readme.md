@@ -1,5 +1,7 @@
-# WebapiCore-seed [![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
-
+# WebapiCore-seed 
+[![Build Status](https://travis-ci.org/MakingSense/WebApiCore-Seed.svg?branch=master)](https://travis-ci.org/MakingSense/WebApiCore-Seed)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=makingsensenetcoreseed&metric=alert_status)](https://sonarcloud.io/dashboard?id=makingsensenetcoreseed)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=makingsensenetcoreseed&metric=coverage)](https://sonarcloud.io/component_measures?id=makingsensenetcoreseed&metric=coverage)
 ## Prerequisites
 
 .NET Core SDK
