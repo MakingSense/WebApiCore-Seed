@@ -75,7 +75,7 @@ namespace Seed.Api
             // Register Infrastructure dependencies
             services.AddScoped<IRestClient>(sp => new RestClient($"https://{Configuration["auth0:domain"]}", new HttpClient()));
             services.AddSingleton<IAuthZeroClient>(sp => new AuthZeroClient(sp.GetRequiredService<IRestClient>(), Configuration["auth0:NonInteractiveClientId"], Configuration["auth0:NonInteractiveClientSecret"], Configuration["auth0:domain"]));
-            services.AddTransient<IAuthZeroService>(sp => new AuthZeroService(sp.GetRequiredService<IAuthZeroClient>()));
+            services.AddTransient<IAuthZeroService>(sp => new AuthZeroService(sp.GetRequiredService<IAuthZeroClient>(), Configuration["auth0:UserPasswordConnection"]));
 
             // Register Services
             services.AddTransient<IUserService>(sp => new UserService(sp.GetRequiredService<WebApiCoreSeedContext>()));
@@ -98,7 +98,7 @@ namespace Seed.Api
             {
                 //Sets swagger UI route on root, "GET {baseUrl}/ "
                 c.RoutePrefix = string.Empty;
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiCoreSeed V1");
+                c.SwaggerEndpoint(Configuration["Swagger:EndpointPath"], Configuration["Swagger:EndpointName"]);
             });
             
             app.UseMvc();

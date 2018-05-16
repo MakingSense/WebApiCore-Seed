@@ -7,7 +7,7 @@ namespace Seed.Api.Filters
 {
     public class ValidateModelResponseOperationFilter : IOperationFilter
     {
-        private Dictionary<string, List<string>> responseExample = new Dictionary<string, List<string>>()
+        private readonly Dictionary<string, List<string>> responseExample = new Dictionary<string, List<string>>()
         {
             {
                 "property1",

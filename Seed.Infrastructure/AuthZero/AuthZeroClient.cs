@@ -63,6 +63,7 @@ namespace Seed.Infrastructure.AuthZero
 
         private async Task<Result<AuthZeroToken, ErrorResult>> RetrieveNewToken()
         {
+            var tokenUri = new Uri("/oauth/token");
             var bodyParameters = new
             {
                 grant_type = "client_credentials",
@@ -73,7 +74,7 @@ namespace Seed.Infrastructure.AuthZero
 
             try
             {
-                var response = await _restClient.PostAsync<AccessToken, ApiError>("/oauth/token", bodyParameters);
+                var response = await _restClient.PostAsync<AccessToken, ApiError>(tokenUri.ToString(), bodyParameters);
                 return response.IsSuccessResult ?
                     new Result<AuthZeroToken, ErrorResult>(new AuthZeroToken(response.SuccessValue.AccessToken, response.SuccessValue.ExpiresIn)) :
                     new Result<AuthZeroToken, ErrorResult>(new ErrorResult(response.ErrorValue.ErrorCode, response.ErrorValue.Message));

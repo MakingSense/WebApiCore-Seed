@@ -9,7 +9,7 @@ namespace Seed.Infrastructure.AuthZero
     public class AuthZeroService : IAuthZeroService
     {
         /// <summary> Auht0 connection used to store credentials </summary>
-        private const string UserPasswordConnection = "Username-Password-Authentication";
+        private readonly string _userPasswordConnection;
 
         private readonly IAuthZeroClient _authZeroClient;
 
@@ -17,9 +17,10 @@ namespace Seed.Infrastructure.AuthZero
         /// Initializes a new instance of the <see cref="AuthZeroService"/> class.
         /// </summary>
         /// <param name="authZeroClient"> Configured Auth0 client </param>
-        public AuthZeroService(IAuthZeroClient authZeroClient)
+        public AuthZeroService(IAuthZeroClient authZeroClient, string userPasswordConnection)
         {
             _authZeroClient = authZeroClient;
+            _userPasswordConnection = userPasswordConnection;
         }
 
         /// <inheritdoc/>
@@ -34,7 +35,7 @@ namespace Seed.Infrastructure.AuthZero
             {
                 Email = email,
                 Password = password,
-                Connection = UserPasswordConnection,
+                Connection = _userPasswordConnection,
                 AppMetadata = new
                 {
                     Authorization = new

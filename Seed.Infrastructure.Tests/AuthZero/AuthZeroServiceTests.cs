@@ -34,7 +34,7 @@ namespace Seed.Infrastructure.Tests.AuthZero
             authZeroClient.Setup(azc => azc.GetManagementApiClient())
                 .ReturnsAsync(new Result<IManagementApiClient, ErrorResult>(managementApiMock.Object));
 
-            var authZeroService = new AuthZeroService(authZeroClient.Object);
+            var authZeroService = new AuthZeroService(authZeroClient.Object, "mokedPwdConnection");
 
             // Act
             var result = await authZeroService.CreateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>());
@@ -63,7 +63,7 @@ namespace Seed.Infrastructure.Tests.AuthZero
             var authZeroClient = new Mock<IAuthZeroClient>();
             authZeroClient.Setup(azc => azc.GetManagementApiClient())
                 .ReturnsAsync(new Result<IManagementApiClient, ErrorResult>(managementApiMock.Object));
-            var authZeroService = new AuthZeroService(authZeroClient.Object);
+            var authZeroService = new AuthZeroService(authZeroClient.Object, "mokedPwdConnection");
 
             // Act
             var result = await authZeroService.CreateUserAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>());

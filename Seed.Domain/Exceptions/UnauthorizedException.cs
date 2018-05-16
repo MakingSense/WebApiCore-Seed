@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Seed.Domain.Exceptions
 {
     /// <summary>
     /// Exception thrown when the current role/user does not satisfy authorization requirements
     /// </summary>
+    [Serializable]
     public class UnauthorizedException : Exception
     {
         /// <summary> Initializes a new instance of the <see cref="UnauthorizedException"/> class. </summary>
@@ -22,5 +24,12 @@ namespace Seed.Domain.Exceptions
         /// <param name="message"> Descriptive message for the error </param>
         /// <param name="innerException"> The exception that is the cause of the current exception, or a null reference if no inner exception is specified </param>
         public UnauthorizedException(string message, Exception innerException) : base(message, innerException) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnauthorizedException"/> class
+        /// </summary>
+        /// <param name="serializationInfo"> data to serialize/deserialize this object </param>
+        /// <param name="streamingContext"> source of the stream </param>
+        protected UnauthorizedException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext) { }
     }
 }
