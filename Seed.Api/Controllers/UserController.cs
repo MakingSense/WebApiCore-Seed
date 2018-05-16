@@ -58,10 +58,11 @@ namespace Seed.Api.Controllers
         /// Creates a new user
         /// </summary>
         /// <param name="user" cref="UserDto">User model</param>
-        /// <response code="204">User created</response>
+        /// <response code="201">User created</response>
         /// <response code="404">User could not be created</response>
         [HttpPost]
         [ValidateModel]
+        [ProducesResponseType(typeof(User), 201)]
         public async Task<IActionResult> Create([FromBody]UserDto user)
         {
             if (user == null)
@@ -69,7 +70,7 @@ namespace Seed.Api.Controllers
                 return BadRequest();
             }
 
-            var affectedRows = await _userService.CreateAsync(new User
+            var userCreated = await _userService.CreateAsync(new User
             {
                 Id = Guid.NewGuid(),
                 Email = user.Email,
@@ -80,7 +81,7 @@ namespace Seed.Api.Controllers
                 // TODO: get createdBy from current user
             });
 
-            return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;
+            return CreatedAtAction("Get", new { id = userCreated.Id }, userCreated);
         }
 
         ///<summary>
