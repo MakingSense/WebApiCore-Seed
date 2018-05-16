@@ -14,9 +14,9 @@ install:
   - dotnet restore
 script:
   - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll begin /key:makingsensenetcoreseed /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170" /d:sonar.organization=making-sense /d:sonar.verbose=true /d:sonar.cs.opencover.reportsPaths="$(pwd)/Seed.*.Tests/coverage.xml"
-  - dotnet build --configuration release
-  - dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
-  - dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
-  - dotnet test Seed.Api.Tests/Seed.Api.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
-  - dotnet test Seed.Data.Tests/Seed.Data.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
+  - sudo dotnet build --configuration release
+  - sudo dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
+  - sudo dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
+  - sudo dotnet test Seed.Api.Tests/Seed.Api.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
+  - sudo dotnet test Seed.Data.Tests/Seed.Data.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration release
   - sudo dotnet ~/tools/sonarscanner/SonarScanner.MSBuild.dll end /d:sonar.login="05f3cb7e227cb06a2c544264aed57186621df170"
