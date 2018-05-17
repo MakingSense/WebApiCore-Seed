@@ -82,7 +82,7 @@ namespace Seed.Api.Tests.Controllers
         #region Create Tests
 
         [Fact]
-        public async void Create_ShouldReturnNoContent_WhenUserIsOk()
+        public async void Create_ShouldReturnCreated_WhenUserIsOk()
         {
             var userService = new Mock<IUserService>();
             var classUnderTest = new UserController(userService.Object);
@@ -94,11 +94,14 @@ namespace Seed.Api.Tests.Controllers
                   u.FirstName == userDto.FirstName &&
                   u.LastName == userDto.LastName &&
                   u.UserName == userDto.UserName)))
-                  .ReturnsAsync(1);
+                  .ReturnsAsync(new User()
+                  {
+                      Id = Guid.NewGuid()
+                  });
 
             var result = await classUnderTest.Create(userDto);
 
-            Assert.IsType<NoContentResult>(result);
+            Assert.IsType<CreatedAtActionResult>(result);
             userService.VerifyAll();
         }
 
@@ -111,28 +114,6 @@ namespace Seed.Api.Tests.Controllers
             var result = await classUnderTest.Create(null);
 
             Assert.IsType<BadRequestResult>(result);
-            userService.VerifyAll();
-        }
-
-        [Fact]
-        public async void Create_ShouldReturnNotFound_WhenNoUserWasNotCreated()
-        {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
-
-            var userDto = GetADefaultUserDto();
-
-            userService.Setup(a => a.CreateAsync(It.Is<User>(
-                u =>
-                    u.Email == userDto.Email &&
-                    u.FirstName == userDto.FirstName &&
-                    u.LastName == userDto.LastName &&
-                    u.UserName == userDto.UserName)))
-                .ReturnsAsync(0);
-
-            var result = await classUnderTest.Create(userDto);
-
-            Assert.IsType<NotFoundResult>(result);
             userService.VerifyAll();
         }
 

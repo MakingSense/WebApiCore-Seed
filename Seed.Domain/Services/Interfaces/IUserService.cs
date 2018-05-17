@@ -22,7 +22,7 @@ namespace Seed.Domain.Services.Interfaces
         /// </summary>
         /// <param name="user">User to create</param>
         /// <returns>An integer indicating the amount of affected rows</returns>
-        Task<int> CreateAsync(User user);
+        Task<User> CreateAsync(User user);
 
         /// <summary>
         /// Deletes a user by Id
