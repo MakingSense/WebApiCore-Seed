@@ -19,7 +19,7 @@ namespace Seed.Data.EF
         public WebApiCoreSeedContext() : base() { }
 
         /// <summary> All users registered on WebApiCoreSeed database</summary>
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

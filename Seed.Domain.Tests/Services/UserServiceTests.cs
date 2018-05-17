@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Seed.Data.EF;
 using Seed.Data.Models;
 using Seed.Domain.Services;
+using Seed.Domain.Services.Interfaces;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,23 +19,17 @@ namespace Seed.Domain.Tests
         public async Task GetByIdAsync_ShouldReturnUser()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder();
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
             var createdUser = GetADefaultUser();
+            context.Setup(x => x.Users).Returns(users.Object);
+            users.Setup(x => x.FindAsync(It.Is<Guid>(y => y == createdUser.Id)))
+                 .ReturnsAsync(createdUser)
+                 .Verifiable();
+            var userService = new UserService(context.Object);
 
-            User retrievedUser = null;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                context.Add(createdUser);
-                context.SaveChanges();
-            }
-
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
-
-                // Act
-                retrievedUser = await userService.GetByIdAsync(createdUser.Id);
-            }
+            // Act
+            var retrievedUser = await userService.GetByIdAsync(createdUser.Id);
 
             // Assert
             Assert.NotNull(retrievedUser);
@@ -40,24 +37,30 @@ namespace Seed.Domain.Tests
             Assert.Equal(createdUser.Email, retrievedUser.Email);
             Assert.Equal(createdUser.FirstName, retrievedUser.FirstName);
             Assert.Equal(createdUser.LastName, retrievedUser.LastName);
+            context.VerifyAll();
         }
 
         [Fact]
         public async Task GetByIdAsync_ShouldReturnNull()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("GetByIdAsync_ShouldReturnNull");
-            User user;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
+            var id = Guid.NewGuid();
+            User user = null;
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
+            users.Setup(x => x.FindAsync(It.Is<Guid>(y => y == id)))
+                 .ReturnsAsync(user)
+                 .Verifiable();
+            var userService = new UserService(context.Object);
 
-                // Act
-                user = await userService.GetByIdAsync(Guid.Parse("00000000-0000-0000-0000-000000038479"));
-            }
+            //Act
+            var retrievedUser = await userService.GetByIdAsync(id);
 
             // Assert
-            Assert.Null(user);
+            Assert.Null(retrievedUser);
+            context.VerifyAll();
         }
 
         #endregion
@@ -68,51 +71,51 @@ namespace Seed.Domain.Tests
         public async void Delete_ShouldDeleteUser()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("Delete_ShouldDeleteUser");
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
             var createdUser = GetADefaultUser();
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
+            users.Setup(x => x.FindAsync(It.Is<Guid>(y => y == createdUser.Id)))
+                 .ReturnsAsync(createdUser)
+                 .Verifiable();
+            users.Setup(x => x.Remove(It.Is<User>(y => y.Id == createdUser.Id)))
+                 .Verifiable();
+            context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(1);
+            var userService = new UserService(context.Object);
 
-            int affectedRows;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                context.Add(createdUser);
-                context.SaveChanges();
-            }
+            // Act
+            var affectedRows = await userService.DeleteByIdAsync(createdUser.Id);
 
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
-
-                // Act
-                affectedRows = await userService.DeleteByIdAsync(createdUser.Id);
-            }
-
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                // Act
-                var user = await context.Users.FindAsync(createdUser.Id);
-                // Assert
-                Assert.Null(user);
-            }
             // Assert
             Assert.True(affectedRows > 0);
+            users.Verify(x => x.Remove(It.Is<User>(y => y.Id == createdUser.Id)), Times.Once);
+            context.VerifyAll();
         }
 
         [Fact]
         public async void Delete_UserNotFound()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("Delete_UserNotFound");
-            int affectedRows;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
+            var id = Guid.NewGuid();
+            User user = null;
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
+            users.Setup(x => x.FindAsync(It.Is<Guid>(y => y == id)))
+                 .ReturnsAsync(user)
+                 .Verifiable();
+            var userService = new UserService(context.Object);
 
-                // Act
-                affectedRows = await userService.DeleteByIdAsync(Guid.NewGuid());
-            }
+            //Act
+            var affectedRows = await userService.DeleteByIdAsync(Guid.NewGuid());
 
             // Assert
             Assert.Equal(0, affectedRows);
+            users.Verify(x => x.Remove(It.Is<User>(y => y.Id == id)), Times.Never);
+            context.VerifyAll();
         }
 
         #endregion
@@ -123,44 +126,50 @@ namespace Seed.Domain.Tests
         public async void Update_ShouldUpdateIfUserExists()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("Update_ShouldUpdateIfUserExists");
-            var createdUser = GetADefaultUser();
-            int affectedRows;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                context.Add(createdUser);
-                context.SaveChanges();
-            }
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
+            var user = GetADefaultUser();
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
+            users.Setup(x => x.FindAsync(It.Is<Guid>(y => y == user.Id)))
+                 .ReturnsAsync(user)
+                 .Verifiable();
+            context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(1);
+            var userService = new UserService(context.Object);
 
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
-
-                // Act
-                affectedRows = await userService.UpdateAsync(createdUser);
-            }
+            // Act
+            int affectedRows = await userService.UpdateAsync(user);
 
             // Assert
             Assert.True(affectedRows > 0);
+            context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            context.VerifyAll();
         }
 
         [Fact]
         public async void Update_ShouldReturnZeroIfUserNotExists()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("Update_ShouldReturnZeroIfUserNotExists");
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
             var createdUser = GetADefaultUser();
-            int affectedRows;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
 
-                // Act
-                affectedRows = await userService.UpdateAsync(createdUser);
-            }
+            var id = Guid.NewGuid();
+            users.Setup(a => a.FindAsync(It.Is<Guid>(g => g == id), It.IsAny<CancellationToken>()))
+                 .Returns<User>(null);
+            context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(1);
+            var userService = new UserService(context.Object);
+
+            // Act
+            var affectedRows = await userService.UpdateAsync(createdUser);
 
             // Assert
             Assert.Equal(0, affectedRows);
+            context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
         }
 
         #endregion
@@ -171,25 +180,22 @@ namespace Seed.Domain.Tests
         public async void Create_ShoulReturnOneIfCreated()
         {
             // Arrange
-            var optionsBuilder = DbContextBuilder("Create_ShoulReturnOneIfCreated");
+            var context = new Mock<WebApiCoreSeedContext>();
+            var users = new Mock<DbSet<User>>();
             var createdUser = GetADefaultUser();
-
-            int affectedRows;
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                context.Add(createdUser);
-                context.SaveChanges();
-            }
-
-            using (var context = new WebApiCoreSeedContext(optionsBuilder.Options))
-            {
-                var userService = new UserService(context);
-
-                // Act
-                affectedRows = await userService.UpdateAsync(createdUser);
-                // Assert
-                Assert.Equal(1, affectedRows);
-            }
+            context.Setup(x => x.Users)
+                   .Returns(users.Object);
+            users.Setup(x => x.Add(It.Is<User>(y => y.Id == createdUser.Id)))
+                 .Verifiable();
+            context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(1);
+            var userService = new UserService(context.Object);
+            // Act
+            var affectedRows = await userService.CreateAsync(createdUser);
+            // Assert
+            Assert.Equal(1, affectedRows);
+            context.VerifyAll();
+            users.Verify(x => x.Add(It.Is<User>(y => y.Id == createdUser.Id)), Times.Once);
         }
 
         #endregion
@@ -210,12 +216,6 @@ namespace Seed.Domain.Tests
             };
         }
 
-        private static DbContextOptionsBuilder DbContextBuilder(string name = "default")
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<WebApiCoreSeedContext>();
-            optionsBuilder.UseInMemoryDatabase(name);
-            return optionsBuilder;
-        }
         #endregion
     }
 }
