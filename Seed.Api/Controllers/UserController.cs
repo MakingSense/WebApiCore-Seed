@@ -59,7 +59,6 @@ namespace Seed.Api.Controllers
         /// </summary>
         /// <param name="user" cref="UserDto">User model</param>
         /// <response code="201">User created</response>
-        /// <response code="404">User could not be created</response>
         [HttpPost]
         [ValidateModel]
         [ProducesResponseType(typeof(User), 201)]
