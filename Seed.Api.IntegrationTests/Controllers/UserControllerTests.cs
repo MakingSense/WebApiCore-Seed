@@ -16,16 +16,16 @@ using Xunit;
 
 namespace Seed.Api.IntegrationTests.Controllers
 {
-    public class UserIntegrationTest : IClassFixture<ApiTestFixture>
+    public class UserControllerTests : IClassFixture<ApiTestFixture>
     {
         private const string ResouceUri = "api/users/";
 
-        private readonly HttpClient _client;
+        private readonly HttpClient _httpClient;
         private readonly DbContextOptions<WebApiCoreSeedContext> _dbContextOptions;
 
-        public UserIntegrationTest(ApiTestFixture fixture)
+        public UserControllerTests(ApiTestFixture fixture)
         {
-            _client = fixture.Client;
+            _httpClient = fixture.Client;
             _dbContextOptions = fixture.DbContextOptions;
         }
 
@@ -34,7 +34,7 @@ namespace Seed.Api.IntegrationTests.Controllers
         [Fact]
         public async Task Get_ShouldReturnAListOfUsers_WhenNoParameters()
         {
-            var result = await _client.GetAsync(ResouceUri);
+            var result = await _httpClient.GetAsync(ResouceUri);
             result.EnsureSuccessStatusCode();
 
             var users = JsonConvert.DeserializeObject<List<User>>(await result.Content.ReadAsStringAsync());
@@ -48,11 +48,28 @@ namespace Seed.Api.IntegrationTests.Controllers
             Guid guid;
             using (var dbcontext = CreateContext())
             {
-                guid = (await dbcontext.Users.FirstAsync()).Id;
+                var userdb = (await dbcontext.Users.FirstOrDefaultAsync());
+
+                if(userdb == null)
+                {
+                    userdb = (await dbcontext.Users.AddAsync(new User
+                    {
+                        Email = "anemail@email.com",
+                        CreatedBy = "creator",
+                        CreatedOn = DateTime.Now,
+                        FirstName = "firstName",
+                        Id = Guid.NewGuid(),
+                        LastName = "lastName",
+                        UserName = "userName"
+                    })).Entity;
+                    await dbcontext.SaveChangesAsync();
+                }
+
+                guid = userdb.Id;
             }
             var request = ResouceUri + guid.ToString();
 
-            var result = await _client.GetAsync(request);
+            var result = await _httpClient.GetAsync(request);
 
             result.EnsureSuccessStatusCode();
 
@@ -68,7 +85,7 @@ namespace Seed.Api.IntegrationTests.Controllers
 
             var request = ResouceUri + guid.ToString();
 
-            var result = await _client.GetAsync(request);
+            var result = await _httpClient.GetAsync(request);
 
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }
@@ -88,7 +105,7 @@ namespace Seed.Api.IntegrationTests.Controllers
                 UserName = "testpersonIntegration"
             };
 
-            var result = await _client.PostAsync(ResouceUri, CreateContent(user));
+            var result = await _httpClient.PostAsync(ResouceUri, CreateContent(user));
 
             result.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
@@ -108,7 +125,7 @@ namespace Seed.Api.IntegrationTests.Controllers
                 ammountOfUsers = await dbcontext.Users.CountAsync();
             }
 
-            var result = await _client.PostAsync(ResouceUri, CreateContent(user));
+            var result = await _httpClient.PostAsync(ResouceUri, CreateContent(user));
 
             Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
 
@@ -157,7 +174,7 @@ namespace Seed.Api.IntegrationTests.Controllers
 
             var requestUri = $"{ResouceUri}{dbUser.Id.ToString()}";
 
-            var result = await _client.PutAsync(requestUri, CreateContent(user));
+            var result = await _httpClient.PutAsync(requestUri, CreateContent(user));
             result.EnsureSuccessStatusCode();
 
             User afterPutUser;
@@ -188,7 +205,7 @@ namespace Seed.Api.IntegrationTests.Controllers
 
             var requestUri = $"{ResouceUri}{id.ToString()}";
 
-            var result = await _client.PutAsync(requestUri, CreateContent(user));
+            var result = await _httpClient.PutAsync(requestUri, CreateContent(user));
 
             User afterPutUser;
 
@@ -209,11 +226,26 @@ namespace Seed.Api.IntegrationTests.Controllers
             using (var dbcontext = CreateContext())
             {
                 dbUser = await dbcontext.Users.FirstOrDefaultAsync();
+                if (dbUser == null)
+                {
+                    dbUser = (await dbcontext.Users.AddAsync(new User
+                    {
+                        Email = "anemail@email.com",
+                        CreatedBy = "creator",
+                        CreatedOn = DateTime.Now,
+                        FirstName = "firstName",
+                        Id = Guid.NewGuid(),
+                        LastName = "lastName",
+                        UserName = "userName"
+                    })).Entity;
+
+                    await dbcontext.SaveChangesAsync();
+                }
             }
 
             var requestUri = $"{ResouceUri}{dbUser.Id.ToString()}";
 
-            var result = await _client.PutAsync(requestUri, CreateContent(user));
+            var result = await _httpClient.PutAsync(requestUri, CreateContent(user));
 
             User afterPutUser;
 
@@ -241,7 +273,7 @@ namespace Seed.Api.IntegrationTests.Controllers
                 userId = (await dbContext.Users.FirstAsync()).Id;
             }
 
-            var result = await _client.DeleteAsync($"{ResouceUri}{userId.ToString()}");
+            var result = await _httpClient.DeleteAsync($"{ResouceUri}{userId.ToString()}");
 
             result.EnsureSuccessStatusCode();
 
@@ -264,7 +296,7 @@ namespace Seed.Api.IntegrationTests.Controllers
                 userCount = await dbContext.Users.CountAsync();
             }
 
-            var result = await _client.DeleteAsync($"{ResouceUri}{userId.ToString()}");
+            var result = await _httpClient.DeleteAsync($"{ResouceUri}{userId.ToString()}");
 
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
 
