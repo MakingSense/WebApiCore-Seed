@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Seed.Api.Tests.Middleware
 {
-    public class ErrorHandlingMiddlewareTest
+    public class ErrorHandlingMiddlewareTests
     {
         [Fact]
         public async void Invoke_ShouldDoNothing_WhenNextThrowsNoExceptions()

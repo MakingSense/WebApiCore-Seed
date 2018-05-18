@@ -9,4 +9,5 @@ script:
   - dotnet test Seed.Domain.Tests/Seed.Domain.Tests.csproj --configuration release
   - dotnet test Seed.Infrastructure.Tests/Seed.Infrastructure.Tests.csproj --configuration release
   - dotnet test Seed.Api.Tests/Seed.Api.Tests.csproj --configuration release
+  - dotnet test Seed.Api.IntegrationTests/Seed.Api.IntegrationTests.csproj --configuration release
   - dotnet test Seed.Data.Tests/Seed.Data.Tests.csproj --configuration release

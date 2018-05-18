@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Seed.Api.Tests.Controllers
 {
-    public class UserControllerTest
+    public class UserControllerTests
     {
         #region GetAll Tests
 
