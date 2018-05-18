@@ -33,11 +33,12 @@ namespace Seed.Domain.Services
             return await _dbContext.Users.ToListAsync();
         }
 
-        public async Task<int> CreateAsync(User user)
+        public async Task<User> CreateAsync(User user)
         {
             user.CreatedOn = DateTime.Now;
-            _dbContext.Users.Add(user);
-            return await _dbContext.SaveChangesAsync();
+            var addEntry = await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+            return addEntry.Entity;
         }
 
         public async Task<int> UpdateAsync(User user)

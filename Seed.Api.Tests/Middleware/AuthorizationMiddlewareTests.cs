@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Seed.Api.Tests.Middleware
 {
-    public class AuthorizationMiddlewareTest 
+    public class AuthorizationMiddlewareTests 
     {
         [Fact]
         public async void Invoke_ShouldInvokeNext_WhenUserIsValid()

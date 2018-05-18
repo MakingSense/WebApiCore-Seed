@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Seed.Data.Tests.EF
 {
-    public class DatabaseSeedTest
+    public class DatabaseSeedTests
     {
         [Fact]
         public async Task Initialize_ShouldCreateAUser()
