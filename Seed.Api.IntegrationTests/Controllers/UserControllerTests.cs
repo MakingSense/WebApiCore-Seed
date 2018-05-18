@@ -108,7 +108,7 @@ namespace Seed.Api.IntegrationTests.Controllers
             var result = await _httpClient.PostAsync(ResouceUri, CreateContent(user));
 
             result.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, result.StatusCode);
             using (var dbcontext = CreateContext())
             {
                 Assert.NotNull(dbcontext.Users.FirstOrDefault(a => a.UserName == user.UserName));
