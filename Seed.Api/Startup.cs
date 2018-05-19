@@ -61,11 +61,10 @@ namespace Seed.Api
                 option.Authority = $"https://{Configuration["auth0:domain"]}/";
             });
 
-            //Creates the swagger json based on the documented xml/attributes of the endpoints
+            // Creates the Swagger json based on the documented xml/attributes of the endpoints.
             services.AddSwaggerGen(c =>
             {
-                //Metadata of the api
-                c.SwaggerDoc("v1", GetSwaggerDoc());
+                c.SwaggerDoc("v1", GetSwaggerMetadata());
                 var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -89,43 +88,38 @@ namespace Seed.Api
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(AuthorizationMiddleware));
-
-            //Enable swagger midleware
             app.UseSwagger();
-            
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+
+            // Enable middleware to serve Swagger UI (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                //Sets swagger UI route on root, "GET {baseUrl}/ "
+                // Sets Swagger UI route on root, "GET {baseUrl}/".
                 c.RoutePrefix = string.Empty;
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiCoreSeed V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", ".NET Core API Seed");
             });
-            
+
             app.UseMvc();
+
             DatabaseSeed.Initialize(dbContext);
         }
 
-        /// <summary>
-        /// Returns swagger metadata
-        /// </summary>
-        /// <returns></returns>
-        private static Info GetSwaggerDoc()
+        private static Info GetSwaggerMetadata()
         {
-            return new Info 
-            { 
-                Title = "WebApiCoreSeed", 
+            return new Info
+            {
+                Title = ".NET Core API Seed",
                 Version = "v1",
-                Description = "Web Api seed for MS",
+                Description = "Seed for an API using .NET Core",
                 TermsOfService = "https://github.com/MakingSense/WebApiCore-Seed",
                 Contact = new Contact
                 {
-                    Name = "Gastón Cerioni",
-                    Email = "gcerioni@makingsense.com"
+                    Name = "Making Sense",
+                    Email = "info@makingsense.com"
                 },
                 License = new License
                 {
-                    Name = "I would love to put one c:",
-                    Url = "https://github.com/MakingSense/WebApiCore-Seed"
+                    Name = "MIT",
+                    Url = "https://github.com/MakingSense/WebApiCore-Seed/blob/master/LICENSE"
                 }
             };
         }
