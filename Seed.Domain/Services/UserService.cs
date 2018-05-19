@@ -22,7 +22,6 @@ namespace Seed.Domain.Services
             _dbContext = dbContext;
         }
 
-        /// <inheritdoc/>
         public async Task<User> GetByIdAsync(Guid userId)
         {
             return await _dbContext.Users.FindAsync(userId);
@@ -45,7 +44,7 @@ namespace Seed.Domain.Services
         {
             var userToUpdate = await _dbContext.Users.FindAsync(user.Id);
 
-            if(userToUpdate == null)
+            if (userToUpdate == null)
             {
                 return 0;
             }
@@ -55,7 +54,7 @@ namespace Seed.Domain.Services
             userToUpdate.UserName = user.UserName;
             userToUpdate.UpdatedBy = user.UpdatedBy;
             userToUpdate.UpdatedOn = DateTime.Now;
-              
+
             return await _dbContext.SaveChangesAsync();
         }
 
@@ -68,7 +67,7 @@ namespace Seed.Domain.Services
             }
 
             _dbContext.Users.Remove(user);
-            return await _dbContext.SaveChangesAsync();           
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -26,35 +26,33 @@ namespace Seed.Api.Controllers
         /// Gets a list of users
         /// </summary>
         /// <response code="200">List of users</response>
-        /// <return>List of users</return>
         [HttpGet]
         [ProducesResponseType(typeof(List<UserDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAsync();
             var result = users.Select(u => new UserDto(u)).ToList();
+
             return Ok(result);
         }
 
         /// <summary>
-        /// Gets a user based on his id
+        /// Gets a user for the given id
         /// </summary>
-        /// <param name="id" cref="Guid">Guid of the user</param>
-        /// <response code="200">The user that has the given id</response>
-        /// <response code="404">User with the given id was not found</response>
-        /// <return>A users</return>
-        [HttpGet("{id}")]
-        [ValidateModel]
-        [ProducesResponseType(typeof(User), 200)]
-        public async Task<IActionResult> Get(Guid id)
+        /// <param name="userId" cref="Guid">Guid of the user</param>
+        /// <response code="200">User for the given id</response>
+        /// <response code="404">User not found</response>
+        [HttpGet("{userId}")]
+        [ProducesResponseType(typeof(UserDto), 200)]
+        public async Task<IActionResult> Get(Guid userId)
         {
-            var user = await _userService.GetByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            var user = await _userService.GetByIdAsync(userId);
 
-            return Ok(user);
+            if (user == null) return NotFound();
+
+            var result = new UserDto(user);
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -83,7 +81,7 @@ namespace Seed.Api.Controllers
                 // TODO: get createdBy from current user
             });
 
-            return CreatedAtAction("Get", new { id = userCreated.Id }, userCreated);
+            return CreatedAtAction(nameof(Get), new { userId = userCreated.Id }, new UserDto(userCreated));
         }
 
         ///<summary>

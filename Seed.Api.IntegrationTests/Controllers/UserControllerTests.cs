@@ -30,7 +30,7 @@ namespace Seed.Api.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task GetAll_ShouldReturnUsers()
+        public async Task GetAll_ReturnsOk()
         {
             // Arrange
             var sampleUsers = new List<User>()
@@ -65,50 +65,38 @@ namespace Seed.Api.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task Get_ShouldReturnAUser_WhenIdExists()
+        public async Task Get_ReturnsOk()
         {
-            Guid guid;
-            using (var dbcontext = CreateContext())
+            // Arrange
+            var sampleUser = GetSampleUser();
+            using (var context = CreateContext())
             {
-                var userdb = (await dbcontext.Users.FirstOrDefaultAsync());
-
-                if (userdb == null)
-                {
-                    userdb = (await dbcontext.Users.AddAsync(new User
-                    {
-                        Email = "anemail@email.com",
-                        CreatedBy = "creator",
-                        CreatedOn = DateTime.Now,
-                        FirstName = "firstName",
-                        Id = Guid.NewGuid(),
-                        LastName = "lastName",
-                        UserName = "userName"
-                    })).Entity;
-                    await dbcontext.SaveChangesAsync();
-                }
-
-                guid = userdb.Id;
+                await context.Users.AddAsync(sampleUser);
+                await context.SaveChangesAsync();
             }
-            var request = ResouceUri + guid.ToString();
 
-            var result = await _httpClient.GetAsync(request);
+            // Act
+            var result = await _httpClient.GetAsync($"{ResouceUri}{sampleUser.Id.ToString()}");
 
-            result.EnsureSuccessStatusCode();
+            // Assert
+            Assert.True(result.IsSuccessStatusCode);
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
-            var user = JsonConvert.DeserializeObject<User>(await result.Content.ReadAsStringAsync());
-
-            Assert.Equal(guid, user.Id);
+            var user = JsonConvert.DeserializeObject<UserDto>(await result.Content.ReadAsStringAsync());
+            Assert.Equal(sampleUser.Id, user.Id);
+            Assert.Equal(sampleUser.FirstName, user.FirstName);
+            Assert.Equal(sampleUser.LastName, user.LastName);
+            Assert.Equal(sampleUser.UserName, user.UserName);
+            Assert.Equal(sampleUser.Email, user.Email);
         }
 
         [Fact]
-        public async Task Get_ShouldReturnNotFound_WhenIdNotExists()
+        public async Task Get_ReturnsNotFound_WhenUserNotExists()
         {
-            var guid = Guid.NewGuid();
+            // Act
+            var result = await _httpClient.GetAsync($"{ResouceUri}{Guid.NewGuid()}");
 
-            var request = ResouceUri + guid.ToString();
-
-            var result = await _httpClient.GetAsync(request);
-
+            // Assert
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }
 

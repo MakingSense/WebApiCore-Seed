@@ -21,7 +21,7 @@ namespace Seed.Api.Tests.Controllers
         }
 
         [Fact]
-        public async void GetAll_ShouldReturnUsers()
+        public async void GetAll_ReturnsOk()
         {
             // Arrange
             var controller = new UserController(_userService.Object);
@@ -55,45 +55,46 @@ namespace Seed.Api.Tests.Controllers
             }
         }
 
-        #region Get tests
-
         [Fact]
-        public async void Get_ShouldReturnAUser_WhenIdExists()
+        public async void Get_ReturnsOk()
         {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
+            // Arrange
+            var controller = new UserController(_userService.Object);
+            var sampleUser = GetSampleUser();
+            _userService.Setup(mock => mock.GetByIdAsync(sampleUser.Id)).ReturnsAsync(sampleUser);
 
-            var id = Guid.NewGuid();
-            var user = GetSampleUser(id);
+            // Act
+            var result = await controller.Get(sampleUser.Id);
 
-            userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
-                .ReturnsAsync(user);
-
-            var result = await classUnderTest.Get(id);
+            // Assert
+            _userService.Verify(mock => mock.GetByIdAsync(sampleUser.Id), Times.Once);
 
             Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
-            Assert.True((okResult.Value as User).Id == id);
-            userService.VerifyAll();
+            var okObjectResult = result as OkObjectResult;
+            var user = okObjectResult.Value as UserDto;
+
+            Assert.Equal(sampleUser.Id, user.Id);
+            Assert.Equal(sampleUser.FirstName, user.FirstName);
+            Assert.Equal(sampleUser.LastName, user.LastName);
+            Assert.Equal(sampleUser.UserName, user.UserName);
+            Assert.Equal(sampleUser.Email, user.Email);
         }
 
         [Fact]
-        public async void Get_ShouldReturnNotFound_WhenIdNotExists()
+        public async void Get_ReturnsNotFound_WhenUserNotExists()
         {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
+            // Arrange
+            var controller = new UserController(_userService.Object);
+            var userId = Guid.NewGuid();
+            _userService.Setup(mock => mock.GetByIdAsync(userId)).ReturnsAsync((User)null);
 
-            var id = Guid.NewGuid();
-            userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
-                .ReturnsAsync(null as User);
+            // Act
+            var result = await controller.Get(userId);
 
-            var result = await classUnderTest.Get(id);
-
+            // Assert
+            _userService.Verify(mock => mock.GetByIdAsync(userId), Times.Once);
             Assert.IsType<NotFoundResult>(result);
-            userService.VerifyAll();
         }
-
-        #endregion
 
         #region Create Tests
 
