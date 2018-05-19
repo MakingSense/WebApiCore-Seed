@@ -1,9 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Seed.Data.EF;
 using Seed.Data.Models;
 using Seed.Domain.Services;
-using Seed.Domain.Services.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +14,6 @@ namespace Seed.Domain.Tests
         #region Members
 
         private readonly Mock<WebApiCoreSeedContext> _context;
-        private readonly UserService _userService;
 
         #endregion
 
@@ -25,7 +22,6 @@ namespace Seed.Domain.Tests
         public UserServiceTests()
         {
             _context = new Mock<WebApiCoreSeedContext>();
-            _userService = new UserService(_context.Object);
         }
 
         #endregion
@@ -35,15 +31,15 @@ namespace Seed.Domain.Tests
         [Fact]
         public async Task GetByIdAsync_ShouldReturnUser()
         {
-            // Arrang
+            // Arrange
+            var service = new UserService(_context.Object);
             var user = GetADefaultUser();
             _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)))
                  .ReturnsAsync(user)
                  .Verifiable();
 
-
             // Act
-            var retrievedUser = await _userService.GetByIdAsync(user.Id);
+            var retrievedUser = await service.GetByIdAsync(user.Id);
 
             // Assert
             Assert.NotNull(retrievedUser);
@@ -58,13 +54,14 @@ namespace Seed.Domain.Tests
         public async Task GetByIdAsync_ShouldReturnNull()
         {
             // Arrange 
+            var service = new UserService(_context.Object);
             var id = Guid.NewGuid();
             _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == id)))
                  .ReturnsAsync((User)null)
                  .Verifiable();
 
             //Act
-            var retrievedUser = await _userService.GetByIdAsync(id);
+            var retrievedUser = await service.GetByIdAsync(id);
 
             // Assert
             Assert.Null(retrievedUser);
@@ -78,7 +75,8 @@ namespace Seed.Domain.Tests
         [Fact]
         public async void Delete_ShouldDeleteUser()
         {
-            // Arrang
+            // Arrange
+            var service = new UserService(_context.Object);
             var createdUser = GetADefaultUser();
             _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == createdUser.Id)))
                  .ReturnsAsync(createdUser)
@@ -89,7 +87,7 @@ namespace Seed.Domain.Tests
                    .ReturnsAsync(1);
 
             // Act
-            var affectedRows = await _userService.DeleteByIdAsync(createdUser.Id);
+            var affectedRows = await service.DeleteByIdAsync(createdUser.Id);
 
             // Assert
             Assert.True(affectedRows > 0);
@@ -100,13 +98,14 @@ namespace Seed.Domain.Tests
         public async void Delete_UserNotFound()
         {
             // Arrange  
+            var service = new UserService(_context.Object);
             var id = Guid.NewGuid();
             _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == id)))
                  .ReturnsAsync((User)null)
                  .Verifiable();
 
             //Act
-            var affectedRows = await _userService.DeleteByIdAsync(Guid.NewGuid());
+            var affectedRows = await service.DeleteByIdAsync(Guid.NewGuid());
 
             // Assert
             Assert.Equal(0, affectedRows);
@@ -120,7 +119,8 @@ namespace Seed.Domain.Tests
         [Fact]
         public async void Update_ShouldUpdateIfUserExists()
         {
-            // Arrange    
+            // Arrange
+            var service = new UserService(_context.Object);
             var user = GetADefaultUser();
             _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)))
                  .ReturnsAsync(user)
@@ -129,7 +129,7 @@ namespace Seed.Domain.Tests
                    .ReturnsAsync(1);
 
             // Act
-            int affectedRows = await _userService.UpdateAsync(user);
+            int affectedRows = await service.UpdateAsync(user);
 
             // Assert
             Assert.True(affectedRows > 0);
@@ -141,6 +141,7 @@ namespace Seed.Domain.Tests
         public async void Update_ShouldReturnZeroIfUserNotExists()
         {
             // Arrange
+            var service = new UserService(_context.Object);
             var createdUser = GetADefaultUser();
             _context.Setup(a => a.Users.FindAsync(It.Is<Guid>(g => g == createdUser.Id)))
                     .ReturnsAsync((User)null);
@@ -148,35 +149,12 @@ namespace Seed.Domain.Tests
                     .ReturnsAsync(1);
 
             // Act
-            var affectedRows = await _userService.UpdateAsync(createdUser);
+            var affectedRows = await service.UpdateAsync(createdUser);
 
             // Assert
             Assert.Equal(0, affectedRows);
             _context.Verify(x => x.Users.FindAsync(It.Is<Guid>(y => y == createdUser.Id)), Times.Once);
             _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        }
-
-        #endregion
-
-        #region Create Tests
-
-        [Fact]
-        public async void Create_ShoulReturnOneIfCreated()
-        {
-            // Arrange    
-            var createdUser = GetADefaultUser();
-            _context.Setup(x => x.Users.Add(It.Is<User>(y => y.Id == createdUser.Id)))
-                    .Verifiable();
-            _context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-                   .ReturnsAsync(1);
-
-            // Act
-            var affectedRows = await _userService.CreateAsync(createdUser);
-
-            // Assert
-            Assert.Equal(1, affectedRows);
-            _context.Verify(x => x.Users.Add(It.Is<User>(y => y.Id == createdUser.Id)), Times.Once);
-            _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         #endregion

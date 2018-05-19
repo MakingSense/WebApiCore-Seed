@@ -36,9 +36,9 @@ namespace Seed.Domain.Services
         public async Task<User> CreateAsync(User user)
         {
             user.CreatedOn = DateTime.Now;
-            var addEntry = await _dbContext.Users.AddAsync(user);
+            await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-            return addEntry.Entity;
+            return user;
         }
 
         public async Task<int> UpdateAsync(User user)
