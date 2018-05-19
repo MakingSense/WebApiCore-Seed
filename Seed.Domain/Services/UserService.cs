@@ -36,14 +36,14 @@ namespace Seed.Domain.Services
         public async Task<User> CreateAsync(User user)
         {
             user.CreatedOn = DateTime.Now;
-            var addEntry = await _dbContext.Users.AddAsync(user);
+            await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-            return addEntry.Entity;
+            return user;
         }
 
         public async Task<int> UpdateAsync(User user)
         {
-            var userToUpdate = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            var userToUpdate = await _dbContext.Users.FindAsync(user.Id);
 
             if(userToUpdate == null)
             {
@@ -61,7 +61,7 @@ namespace Seed.Domain.Services
 
         public async Task<int> DeleteByIdAsync(Guid userId)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(item => item.Id == userId);
+            var user = await _dbContext.Users.FindAsync(userId);
             if (user == null)
             {
                 return 0;
