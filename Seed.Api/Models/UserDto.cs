@@ -1,36 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Seed.Data.Models;
+using System;
 
 namespace Seed.Api.Models
 {
     public class UserDto
     {
-        /// <summary>
-        /// First name of the person.
-        /// </summary>
-        [Required(ErrorMessage = "You should provide a first name value")]
-        [MaxLength(50)]
+        public UserDto() { }
+
+        public UserDto(User user)
+        {
+            Id = user.Id;
+            CreatedAt = user.CreatedOn;
+            UpdatedAt = user.UpdatedOn;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            UserName = user.UserName;
+            Email = user.Email;
+        }
+
+        public Guid Id { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public string FirstName { get; set; }
-
-        /// <summary>
-        /// Last name, family name or surname of the person.
-        /// </summary>
-        [Required(ErrorMessage = "You should provide a last name value")]
-        [MaxLength(50)]
         public string LastName { get; set; }
-
-        /// <summary>
-        /// Email address of the person.
-        /// </summary>
-        [Required]
-        [MaxLength(50)]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// UserName of the person.
-        /// </summary>
-        [Required]
-        [MaxLength(100)]
         public string UserName { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -29,17 +29,39 @@ namespace Seed.Api.IntegrationTests.Controllers
             _dbContextOptions = fixture.DbContextOptions;
         }
 
-        #region Get Tests
-
         [Fact]
-        public async Task Get_ShouldReturnAListOfUsers_WhenNoParameters()
+        public async Task GetAll_ShouldReturnUsers()
         {
-            var result = await _httpClient.GetAsync(ResouceUri);
-            result.EnsureSuccessStatusCode();
+            // Arrange
+            var sampleUsers = new List<User>()
+            {
+                GetSampleUser(),
+                GetSampleUser(),
+                GetSampleUser()
+            };
 
-            var users = JsonConvert.DeserializeObject<List<User>>(await result.Content.ReadAsStringAsync());
+            using (var context = CreateContext())
+            {
+                await context.Users.AddRangeAsync(sampleUsers);
+                await context.SaveChangesAsync();
+            }
+
+            // Act
+            var result = await _httpClient.GetAsync(ResouceUri);
+
+            // Assert
+            Assert.True(result.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(users);
+
+            var users = JsonConvert.DeserializeObject<List<UserDto>>(await result.Content.ReadAsStringAsync());
+            foreach (var expected in sampleUsers)
+            {
+                var actual = users.SingleOrDefault(u => u.Id == expected.Id);
+                Assert.Equal(expected.FirstName, actual.FirstName);
+                Assert.Equal(expected.LastName, actual.LastName);
+                Assert.Equal(expected.UserName, actual.UserName);
+                Assert.Equal(expected.Email, actual.Email);
+            }
         }
 
         [Fact]
@@ -50,7 +72,7 @@ namespace Seed.Api.IntegrationTests.Controllers
             {
                 var userdb = (await dbcontext.Users.FirstOrDefaultAsync());
 
-                if(userdb == null)
+                if (userdb == null)
                 {
                     userdb = (await dbcontext.Users.AddAsync(new User
                     {
@@ -90,14 +112,12 @@ namespace Seed.Api.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }
 
-        #endregion
-
         #region Post Tests
 
         [Fact]
         public async Task Post_ShouldCreateAUser_WhenAUserIsGiven()
         {
-            var user = new UserDto()
+            var user = new InputUserDto()
             {
                 Email = "testpersonIntegration@email.com",
                 FirstName = "testName",
@@ -147,7 +167,7 @@ namespace Seed.Api.IntegrationTests.Controllers
             {
                 dbUser = dbcontext.Users.FirstOrDefault();
 
-                if(dbUser == null)
+                if (dbUser == null)
                 {
                     dbUser = (await dbcontext.Users.AddAsync(new User
                     {
@@ -164,7 +184,7 @@ namespace Seed.Api.IntegrationTests.Controllers
                 }
             }
 
-            var user = new UserDto()
+            var user = new InputUserDto()
             {
                 Email = "testpersonIntegration@email.com",
                 FirstName = "testName",
@@ -195,7 +215,7 @@ namespace Seed.Api.IntegrationTests.Controllers
         {
             var id = Guid.NewGuid();
 
-            var user = new UserDto()
+            var user = new InputUserDto()
             {
                 Email = "testpersonIntegration@email.com",
                 FirstName = "testName",
@@ -313,5 +333,18 @@ namespace Seed.Api.IntegrationTests.Controllers
 
         private WebApiCoreSeedContext CreateContext() =>
             new WebApiCoreSeedContext(_dbContextOptions);
+
+        private User GetSampleUser(Guid? id = null)
+        {
+            return new User
+            {
+                Id = id ?? Guid.NewGuid(),
+                Email = "johndoe@gmail.com",
+                FirstName = "John",
+                LastName = "Doe",
+                UserName = "fn",
+                CreatedOn = DateTime.Now
+            };
+        }
     }
 }

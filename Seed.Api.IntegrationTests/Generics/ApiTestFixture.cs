@@ -21,10 +21,10 @@ namespace Seed.Api.IntegrationTests.Generics
                 .UseStartup<Startup>();
 
             _server = new TestServer(builder);
+
             Client = _server.CreateClient();
-            DbContextOptions = _server.Host.Services
-                .GetService(typeof(DbContextOptions<WebApiCoreSeedContext>)) as DbContextOptions<WebApiCoreSeedContext>;
-        }  
+            DbContextOptions = _server.Host.Services.GetService(typeof(DbContextOptions<WebApiCoreSeedContext>)) as DbContextOptions<WebApiCoreSeedContext>;
+        }
 
         public HttpClient Client { get; }
 

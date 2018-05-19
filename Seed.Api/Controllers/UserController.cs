@@ -5,6 +5,7 @@ using Seed.Data.Models;
 using Seed.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Seed.Api.Controllers
@@ -24,13 +25,15 @@ namespace Seed.Api.Controllers
         /// <summary>
         /// Gets a list of users
         /// </summary>
-        /// <response code="200">A list of users</response>
-        /// <return>A list of users</return>
+        /// <response code="200">List of users</response>
+        /// <return>List of users</return>
         [HttpGet]
-        [ProducesResponseType(typeof(List<User>), 200)]
+        [ProducesResponseType(typeof(List<UserDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _userService.GetAsync());
+            var users = await _userService.GetAsync();
+            var result = users.Select(u => new UserDto(u)).ToList();
+            return Ok(result);
         }
 
         /// <summary>
@@ -57,12 +60,12 @@ namespace Seed.Api.Controllers
         /// <summary>
         /// Creates a new user
         /// </summary>
-        /// <param name="user" cref="UserDto">User model</param>
+        /// <param name="user" cref="InputUserDto">User model</param>
         /// <response code="201">User created</response>
         [HttpPost]
         [ValidateModel]
         [ProducesResponseType(typeof(User), 201)]
-        public async Task<IActionResult> Create([FromBody]UserDto user)
+        public async Task<IActionResult> Create([FromBody]InputUserDto user)
         {
             if (user == null)
             {
@@ -87,12 +90,12 @@ namespace Seed.Api.Controllers
         /// Updates an user given his id
         ///</summary>
         ///<param name="id" cref="Guid">Guid of the user</param>
-        ///<param name="user" cref="UserDto">User model</param>
+        ///<param name="user" cref="InputUserDto">User model</param>
         ///<response code="204">User created</response>
         ///<response code="404">User not found / User could not be updated</response>
         [HttpPut("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> Update(Guid id, [FromBody]UserDto user)
+        public async Task<IActionResult> Update(Guid id, [FromBody]InputUserDto user)
         {
             if (user == null)
             {

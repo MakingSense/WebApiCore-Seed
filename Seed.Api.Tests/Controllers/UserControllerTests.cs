@@ -6,38 +6,54 @@ using Seed.Data.Models;
 using Seed.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Seed.Api.Tests.Controllers
 {
     public class UserControllerTests
     {
-        #region GetAll Tests
+        private readonly Mock<IUserService> _userService;
 
-        [Fact]
-        public async void GetAll_ShouldReturnAListOfUsers_WhenHasAtLeastOneUser()
+        public UserControllerTests()
         {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
-
-            var id = Guid.NewGuid();
-            var users = new List<User>()
-            {
-                GetADefaultUser(id)
-            };
-
-            userService.Setup(a => a.GetAsync()).ReturnsAsync(users);
-
-            var result = await classUnderTest.GetAll();
-
-            Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Contains(okResult.Value as List<User>, a => a.Id == id);
-            userService.VerifyAll();
+            _userService = new Mock<IUserService>();
         }
 
-        #endregion
+        [Fact]
+        public async void GetAll_ShouldReturnUsers()
+        {
+            // Arrange
+            var controller = new UserController(_userService.Object);
+            var sampleUsers = new List<User>()
+            {
+                GetSampleUser(),
+                GetSampleUser(),
+                GetSampleUser()
+            };
+
+            _userService.Setup(mock => mock.GetAsync()).ReturnsAsync(sampleUsers);
+
+            // Act
+            var result = await controller.GetAll();
+
+            // Assert
+            _userService.Verify(mock => mock.GetAsync(), Times.Once);
+
+            Assert.IsType<OkObjectResult>(result);
+            var okObjectResult = result as OkObjectResult;
+            var users = okObjectResult.Value as List<UserDto>;
+
+            Assert.Equal(sampleUsers.Count, users.Count);
+            foreach (var user in users)
+            {
+                var expected = sampleUsers.SingleOrDefault(u => u.Id == user.Id);
+                Assert.Equal(expected.FirstName, user.FirstName);
+                Assert.Equal(expected.LastName, user.LastName);
+                Assert.Equal(expected.UserName, user.UserName);
+                Assert.Equal(expected.Email, user.Email);
+            }
+        }
 
         #region Get tests
 
@@ -48,7 +64,7 @@ namespace Seed.Api.Tests.Controllers
             var classUnderTest = new UserController(userService.Object);
 
             var id = Guid.NewGuid();
-            var user = GetADefaultUser(id);
+            var user = GetSampleUser(id);
 
             userService.Setup(a => a.GetByIdAsync(It.Is<Guid>(g => g == id)))
                 .ReturnsAsync(user);
@@ -126,7 +142,7 @@ namespace Seed.Api.Tests.Controllers
         {
             var userService = new Mock<IUserService>();
             var classUnderTest = new UserController(userService.Object);
-            
+
             var id = Guid.NewGuid();
             var userDto = GetADefaultUserDto();
 
@@ -150,7 +166,7 @@ namespace Seed.Api.Tests.Controllers
         {
             var userService = new Mock<IUserService>();
             var classUnderTest = new UserController(userService.Object);
-            
+
             var id = Guid.NewGuid();
 
             var result = await classUnderTest.Update(id, null);
@@ -162,7 +178,7 @@ namespace Seed.Api.Tests.Controllers
         [Fact]
         public async void Update_ShouldReturnNotFound_WhenUserNotExists()
         {
-            
+
             var userService = new Mock<IUserService>();
             var classUnderTest = new UserController(userService.Object);
 
@@ -225,25 +241,22 @@ namespace Seed.Api.Tests.Controllers
 
         #region Private Methods
 
-        private static User GetADefaultUser(Guid? id = null)
+        private User GetSampleUser(Guid? id = null)
         {
-            var sanitizedId = id ?? Guid.NewGuid();
-
             return new User
             {
-                Id = sanitizedId,
-                Email = "fn@ms.com",
-                FirstName = "firstName",
-                CreatedBy = "someUser",
-                CreatedOn = DateTime.Now,
-                LastName = "someUser",
-                UserName = "fn"
+                Id = id ?? Guid.NewGuid(),
+                Email = "johndoe@gmail.com",
+                FirstName = "John",
+                LastName = "Doe",
+                UserName = "fn",
+                CreatedOn = DateTime.Now
             };
         }
 
-        private static UserDto GetADefaultUserDto()
+        private static InputUserDto GetADefaultUserDto()
         {
-            return new UserDto
+            return new InputUserDto
             {
                 Email = "fn@ms.com",
                 FirstName = "firstName",
