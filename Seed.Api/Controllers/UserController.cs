@@ -65,23 +65,20 @@ namespace Seed.Api.Controllers
         [ProducesResponseType(typeof(User), 201)]
         public async Task<IActionResult> Create([FromBody]InputUserDto user)
         {
-            if (user == null)
-            {
-                return BadRequest();
-            }
+            // TODO: Fix validation attribute, it's not working as expected.
+            if (user == null) return BadRequest();
 
-            var userCreated = await _userService.CreateAsync(new User
+            var userToCreate = new User
             {
-                Id = Guid.NewGuid(),
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                UserName = user.UserName,
-                CreatedBy = "Test"
-                // TODO: get createdBy from current user
-            });
+                UserName = user.UserName
+            };
 
-            return CreatedAtAction(nameof(Get), new { userId = userCreated.Id }, new UserDto(userCreated));
+            var result = await _userService.CreateAsync(userToCreate);
+
+            return CreatedAtAction(nameof(Get), new { userId = result.Id }, new UserDto(result));
         }
 
         ///<summary>

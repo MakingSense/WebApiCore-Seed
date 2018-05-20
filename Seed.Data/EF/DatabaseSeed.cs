@@ -21,7 +21,7 @@
             { 
                 var users = new[]
                 {
-                    new User { CreatedBy = "System", CreatedOn = DateTime.Now, Email = "noreply@makingsense.com", FirstName = "John", LastName = "Doe", UserName = "JohnDoe" },
+                    new User { CreatedOn = DateTime.Now, Email = "noreply@makingsense.com", FirstName = "John", LastName = "Doe", UserName = "JohnDoe" },
                 };
 
                 dbContext.Users.AddRange(users);

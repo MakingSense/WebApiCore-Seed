@@ -34,9 +34,12 @@ namespace Seed.Domain.Services
 
         public async Task<User> CreateAsync(User user)
         {
+            user.Id = Guid.NewGuid();
             user.CreatedOn = DateTime.Now;
+
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
+
             return user;
         }
 
@@ -52,7 +55,6 @@ namespace Seed.Domain.Services
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
             userToUpdate.UserName = user.UserName;
-            userToUpdate.UpdatedBy = user.UpdatedBy;
             userToUpdate.UpdatedOn = DateTime.Now;
 
             return await _dbContext.SaveChangesAsync();
