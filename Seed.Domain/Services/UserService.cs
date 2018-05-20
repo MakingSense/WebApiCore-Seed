@@ -43,21 +43,21 @@ namespace Seed.Domain.Services
             return user;
         }
 
-        public async Task<int> UpdateAsync(User user)
+        public async Task<User> UpdateAsync(User user)
         {
             var userToUpdate = await _dbContext.Users.FindAsync(user.Id);
 
-            if (userToUpdate == null)
-            {
-                return 0;
-            }
+            if (userToUpdate == null) return null;
 
+            userToUpdate.Email = user.Email;
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
             userToUpdate.UserName = user.UserName;
             userToUpdate.UpdatedOn = DateTime.Now;
 
-            return await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
+
+            return userToUpdate;
         }
 
         public async Task<int> DeleteByIdAsync(Guid userId)

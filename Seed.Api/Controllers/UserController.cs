@@ -58,7 +58,7 @@ namespace Seed.Api.Controllers
         /// <summary>
         /// Creates a new user
         /// </summary>
-        /// <param name="user" cref="InputUserDto">User model</param>
+        /// <param name="user" cref="InputUserDto">User data</param>
         /// <response code="201">User created</response>
         [HttpPost]
         [ValidateModel]
@@ -82,32 +82,33 @@ namespace Seed.Api.Controllers
         }
 
         ///<summary>
-        /// Updates an user given his id
+        /// Updates a user
         ///</summary>
-        ///<param name="id" cref="Guid">Guid of the user</param>
-        ///<param name="user" cref="InputUserDto">User model</param>
-        ///<response code="204">User created</response>
-        ///<response code="404">User not found / User could not be updated</response>
+        ///<param name="id" cref="Guid">Guid of the user to update</param>
+        ///<param name="user" cref="InputUserDto">User data</param>
+        ///<response code="204">User updated successfully</response>
+        ///<response code="404">User not found</response>
         [HttpPut("{id}")]
         [ValidateModel]
         public async Task<IActionResult> Update(Guid id, [FromBody]InputUserDto user)
         {
-            if (user == null)
-            {
-                return BadRequest();
-            }
+            // TODO: Fix validation attribute, it's not working as expected.
+            if (user == null) return BadRequest();
 
-            var affectedRows = await _userService.UpdateAsync(new User
+            var userToUpdate = new User
             {
                 Id = id,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserName = user.UserName
-                // TODO: get UpdatedBy from current user
-            });
+            };
 
-            return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;
+            var result = await _userService.UpdateAsync(userToUpdate);
+
+            if (result == null) return NotFound();
+
+            return NoContent();
         }
 
         ///<summary>

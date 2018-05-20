@@ -129,16 +129,16 @@ namespace Seed.Domain.Tests
                    .ReturnsAsync(1);
 
             // Act
-            int affectedRows = await service.UpdateAsync(user);
+            var result = await service.UpdateAsync(user);
 
             // Assert
-            Assert.True(affectedRows > 0);
+            Assert.NotNull(result);
             _context.Verify(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)), Times.Once);
             _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
-        public async void Update_ShouldReturnZeroIfUserNotExists()
+        public async void Update_ReturnsNull_WhenUserNotExists()
         {
             // Arrange
             var service = new UserService(_context.Object);
@@ -149,10 +149,10 @@ namespace Seed.Domain.Tests
                     .ReturnsAsync(1);
 
             // Act
-            var affectedRows = await service.UpdateAsync(createdUser);
+            var result = await service.UpdateAsync(createdUser);
 
             // Assert
-            Assert.Equal(0, affectedRows);
+            Assert.Null(result);
             _context.Verify(x => x.Users.FindAsync(It.Is<Guid>(y => y == createdUser.Id)), Times.Once);
             _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
         }

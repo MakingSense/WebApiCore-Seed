@@ -21,7 +21,7 @@ namespace Seed.Domain.Services.Interfaces
         /// Creates a user
         /// </summary>
         /// <param name="user">User to create</param>
-        /// <returns>An integer indicating the amount of affected rows</returns>
+        /// <returns>Created user</returns>
         Task<User> CreateAsync(User user);
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Seed.Domain.Services.Interfaces
         /// Updates a user
         /// </summary>
         /// <param name="user">User to update</param>
-        /// <returns>An integer indicating the amount of affected rows</returns>
-        Task<int> UpdateAsync(User user);
+        /// <returns>Updated user</returns>
+        Task<User> UpdateAsync(User user);
     }
 }
