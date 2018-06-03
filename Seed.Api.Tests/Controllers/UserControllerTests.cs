@@ -203,43 +203,39 @@ namespace Seed.Api.Tests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        #region Delete Tests
-
         [Fact]
-        public async void Delete_WhenIdExists_ShouldReturnNoContent()
+        public async void Delete_ReturnsNoContent()
         {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
+            // Arrange.
+            var controller = new UserController(_userService.Object);
+            var userId = Guid.NewGuid();
 
-            var id = Guid.NewGuid();
+            _userService.Setup(mock => mock.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(true);
 
-            userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
-                .ReturnsAsync(1);
+            // Act.
+            var result = await controller.Delete(userId);
 
-            var result = await classUnderTest.Delete(id);
-
+            // Assert.
+            _userService.Verify(mock => mock.DeleteAsync(userId), Times.Once);
             Assert.IsType<NoContentResult>(result);
-            userService.VerifyAll();
         }
 
         [Fact]
-        public async void Delete_WhenIdNotExists_ShouldReturnNotFound()
+        public async void Delete_ReturnsNotFound_WhenUserNotExists()
         {
-            var userService = new Mock<IUserService>();
-            var classUnderTest = new UserController(userService.Object);
+            // Arrange.
+            var controller = new UserController(_userService.Object);
+            var userId = Guid.NewGuid();
 
-            var id = Guid.NewGuid();
+            _userService.Setup(mock => mock.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
-            userService.Setup(a => a.DeleteByIdAsync(It.Is<Guid>(g => g == id)))
-                .ReturnsAsync(0);
+            // Act.
+            var result = await controller.Delete(userId);
 
-            var result = await classUnderTest.Delete(id);
-
+            // Assert.
+            _userService.Verify(mock => mock.DeleteAsync(userId), Times.Once);
             Assert.IsType<NotFoundResult>(result);
-            userService.VerifyAll();
         }
-
-        #endregion
 
         private User GetSampleUser(Guid? id = null)
         {

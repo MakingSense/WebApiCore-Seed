@@ -8,15 +8,10 @@ using System.Threading.Tasks;
 
 namespace Seed.Domain.Services
 {
-    /// <inheritdoc/>
     public class UserService : IUserService
     {
         private readonly WebApiCoreSeedContext _dbContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserService"/> class.
-        /// </summary>
-        /// <param name="dbContext"><see cref="WebApiCoreSeedContext"/> instance required to access database </param>
         public UserService(WebApiCoreSeedContext dbContext)
         {
             _dbContext = dbContext;
@@ -60,16 +55,17 @@ namespace Seed.Domain.Services
             return userToUpdate;
         }
 
-        public async Task<int> DeleteByIdAsync(Guid userId)
+        public async Task<bool> DeleteAsync(Guid userId)
         {
-            var user = await _dbContext.Users.FindAsync(userId);
-            if (user == null)
-            {
-                return 0;
-            }
+            var userToDelete = await _dbContext.Users.FindAsync(userId);
 
-            _dbContext.Users.Remove(user);
-            return await _dbContext.SaveChangesAsync();
+            if (userToDelete == null) return false;
+
+            _dbContext.Users.Remove(userToDelete);
+
+            var result = await _dbContext.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

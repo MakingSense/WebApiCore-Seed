@@ -112,18 +112,19 @@ namespace Seed.Api.Controllers
         }
 
         ///<summary>
-        /// Deletes an user given his id
+        /// Deletes a user
         ///</summary>
-        ///<param name="id" cref="Guid">Guid of the user</param>
-        ///<response code="204">User Deleted</response>
-        ///<response code="404">User not found / User could not be deleted</response>
+        ///<param name="id" cref="Guid">Guid of the user to delete</param>
+        ///<response code="204">User deleted successfully</response>
+        ///<response code="404">User not found</response>
         [HttpDelete("{id}")]
-        [ValidateModel]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var affectedRows = await _userService.DeleteByIdAsync(id);
+            var result = await _userService.DeleteAsync(id);
 
-            return affectedRows == 0 ? NotFound() : NoContent() as IActionResult;
+            if (result == false) return NotFound();
+
+            return NoContent();
         }
     }
 }

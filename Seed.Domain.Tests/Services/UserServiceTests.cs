@@ -87,10 +87,10 @@ namespace Seed.Domain.Tests
                    .ReturnsAsync(1);
 
             // Act
-            var affectedRows = await service.DeleteByIdAsync(createdUser.Id);
+            var result = await service.DeleteAsync(createdUser.Id);
 
             // Assert
-            Assert.True(affectedRows > 0);
+            Assert.True(result);
             _context.Verify(x => x.Users.Remove(It.Is<User>(y => y.Id == createdUser.Id)), Times.Once);
         }
 
@@ -105,10 +105,10 @@ namespace Seed.Domain.Tests
                  .Verifiable();
 
             //Act
-            var affectedRows = await service.DeleteByIdAsync(Guid.NewGuid());
+            var result = await service.DeleteAsync(Guid.NewGuid());
 
             // Assert
-            Assert.Equal(0, affectedRows);
+            Assert.False(result);
             _context.Verify(x => x.Users.Remove(It.Is<User>(y => y.Id == id)), Times.Never);
         }
 

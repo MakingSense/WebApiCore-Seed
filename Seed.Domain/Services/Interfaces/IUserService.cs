@@ -11,7 +11,7 @@ namespace Seed.Domain.Services.Interfaces
     public interface IUserService
     {
         /// <summary>
-        /// Gets a user by Id
+        /// Gets a user
         /// </summary>
         /// <param name="userId">Id of the user to be retrieved</param>
         /// <returns>A <see cref="User"/> object if the user is found, otherwise null</returns>
@@ -25,11 +25,11 @@ namespace Seed.Domain.Services.Interfaces
         Task<User> CreateAsync(User user);
 
         /// <summary>
-        /// Deletes a user by Id
+        /// Deletes a user
         /// </summary>
         /// <param name="userId">Id of the user to delete</param>
-        /// <returns>An integer indicating the amount of affected rows</returns>
-        Task<int> DeleteByIdAsync(Guid userId);
+        /// <returns>Whether the user was deleted or not</returns>
+        Task<bool> DeleteAsync(Guid userId);
 
         /// <summary>
         /// Gets all the existing users
