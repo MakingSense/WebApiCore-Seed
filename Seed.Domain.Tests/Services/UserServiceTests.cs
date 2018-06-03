@@ -1,9 +1,9 @@
-using Moq;
 using Seed.Data.EF;
 using Seed.Data.Models;
 using Seed.Domain.Services;
 using System;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,170 +11,216 @@ namespace Seed.Domain.Tests
 {
     public class UserServiceTests
     {
-        #region Members
-
-        private readonly Mock<WebApiCoreSeedContext> _context;
-
-        #endregion
-
-        #region Constructors
-
-        public UserServiceTests()
-        {
-            _context = new Mock<WebApiCoreSeedContext>();
-        }
-
-        #endregion
-
-        #region GetById Tests
-
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnUser()
+        public async Task GetByIdAsync_ReturnsUser()
         {
             // Arrange
-            var service = new UserService(_context.Object);
-            var user = GetADefaultUser();
-            _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)))
-                 .ReturnsAsync(user)
-                 .Verifiable();
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            var user = GetSampleUser();
+
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                await dbContext.Users.AddAsync(user);
+                await dbContext.SaveChangesAsync();
+            }
 
             // Act
-            var retrievedUser = await service.GetByIdAsync(user.Id);
+            User result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.GetByIdAsync(user.Id);
+            }
 
             // Assert
-            Assert.NotNull(retrievedUser);
-            Assert.Equal(user.UserName, retrievedUser.UserName);
-            Assert.Equal(user.Email, retrievedUser.Email);
-            Assert.Equal(user.FirstName, retrievedUser.FirstName);
-            Assert.Equal(user.LastName, retrievedUser.LastName);
-            _context.Verify(c => c.Users.FindAsync(user.Id), Times.Once);
+            AssertUser(user, result);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull()
-        {
-            // Arrange 
-            var service = new UserService(_context.Object);
-            var id = Guid.NewGuid();
-            _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == id)))
-                 .ReturnsAsync((User)null)
-                 .Verifiable();
-
-            //Act
-            var retrievedUser = await service.GetByIdAsync(id);
-
-            // Assert
-            Assert.Null(retrievedUser);
-            _context.Verify(c => c.Users.FindAsync(id), Times.Once);
-        }
-
-        #endregion
-
-        #region Detele Tests
-
-        [Fact]
-        public async void Delete_ShouldDeleteUser()
+        public async Task GetByIdAsync_ReturnsNull_WhenNotExists()
         {
             // Arrange
-            var service = new UserService(_context.Object);
-            var createdUser = GetADefaultUser();
-            _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == createdUser.Id)))
-                 .ReturnsAsync(createdUser)
-                 .Verifiable();
-            _context.Setup(x => x.Users.Remove(It.Is<User>(y => y.Id == createdUser.Id)))
-                 .Verifiable();
-            _context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-                   .ReturnsAsync(1);
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
 
             // Act
-            var result = await service.DeleteAsync(createdUser.Id);
-
-            // Assert
-            Assert.True(result);
-            _context.Verify(x => x.Users.Remove(It.Is<User>(y => y.Id == createdUser.Id)), Times.Once);
-        }
-
-        [Fact]
-        public async void Delete_UserNotFound()
-        {
-            // Arrange  
-            var service = new UserService(_context.Object);
-            var id = Guid.NewGuid();
-            _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == id)))
-                 .ReturnsAsync((User)null)
-                 .Verifiable();
-
-            //Act
-            var result = await service.DeleteAsync(Guid.NewGuid());
-
-            // Assert
-            Assert.False(result);
-            _context.Verify(x => x.Users.Remove(It.Is<User>(y => y.Id == id)), Times.Never);
-        }
-
-        #endregion
-
-        #region Update Tests
-
-        [Fact]
-        public async void Update_ShouldUpdateIfUserExists()
-        {
-            // Arrange
-            var service = new UserService(_context.Object);
-            var user = GetADefaultUser();
-            _context.Setup(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)))
-                 .ReturnsAsync(user)
-                 .Verifiable();
-            _context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-                   .ReturnsAsync(1);
-
-            // Act
-            var result = await service.UpdateAsync(user);
-
-            // Assert
-            Assert.NotNull(result);
-            _context.Verify(x => x.Users.FindAsync(It.Is<Guid>(y => y == user.Id)), Times.Once);
-            _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async void Update_ReturnsNull_WhenUserNotExists()
-        {
-            // Arrange
-            var service = new UserService(_context.Object);
-            var createdUser = GetADefaultUser();
-            _context.Setup(a => a.Users.FindAsync(It.Is<Guid>(g => g == createdUser.Id)))
-                    .ReturnsAsync((User)null);
-            _context.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(1);
-
-            // Act
-            var result = await service.UpdateAsync(createdUser);
+            User result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.GetByIdAsync(Guid.NewGuid());
+            }
 
             // Assert
             Assert.Null(result);
-            _context.Verify(x => x.Users.FindAsync(It.Is<Guid>(y => y == createdUser.Id)), Times.Once);
-            _context.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private static User GetADefaultUser(Guid? id = null)
+        [Fact]
+        public async Task GetAsync_ReturnsUsers()
         {
-            var sanitizedId = id ?? Guid.NewGuid();
-
-            return new User
+            // Arrange
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            var users = new List<User>
             {
-                Id = new Guid("d58893fd-3836-4308-b840-85f4fe548264"),
+                GetSampleUser(),
+                GetSampleUser(),
+                GetSampleUser()
+            };
+
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                await dbContext.Users.AddRangeAsync(users);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Act
+            List<User> result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.GetAsync();
+            }
+
+            // Assert
+            Assert.Equal(users.Count, result.Count);
+            foreach (var user in result)
+            {
+                var expected = users.SingleOrDefault(u => u.Id == user.Id);
+                AssertUser(expected, user);
+            }
+        }
+
+        [Fact]
+        public async Task CreateAsync_ReturnsCreatedUser()
+        {
+            // Arrange
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            var user = new User
+            {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = "JohnDoe@makinsense.com",
-                UserName = "JohnDoe"
+                Email = "johndoe@test.com",
+                UserName = "johndoe"
             };
+
+            // Act
+            User result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.CreateAsync(user);
+            }
+
+            // Assert
+            Assert.True(result.CreatedOn > DateTime.Now.AddMinutes(-1));
+            Assert.Equal(user.Email, result.Email);
+            Assert.Equal(user.FirstName, result.FirstName);
+            Assert.Equal(user.LastName, result.LastName);
+            Assert.Equal(user.UserName, result.UserName);
         }
 
-        #endregion
+        [Fact]
+        public async Task UpdateAsync_ReturnsUpdatedUser()
+        {
+            // Arrange
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            var user = GetSampleUser();
+
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                await dbContext.Users.AddAsync(user);
+                await dbContext.SaveChangesAsync();
+            }
+
+            var toUpdate = new User
+            {
+                Id = user.Id,
+                FirstName = $"Updated {user.FirstName}",
+                LastName = $"Updated {user.LastName}",
+                Email = "new-email@test.com",
+                UserName = $"updated-{user.UserName}"
+            };
+
+            // Act
+            User result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.UpdateAsync(toUpdate);
+            }
+
+            // Assert
+            Assert.True(result.UpdatedOn > DateTime.Now.AddMinutes(-1));
+            Assert.Equal(toUpdate.Email, result.Email);
+            Assert.Equal(toUpdate.FirstName, result.FirstName);
+            Assert.Equal(toUpdate.LastName, result.LastName);
+            Assert.Equal(toUpdate.UserName, result.UserName);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_WhenUserExists_ReturnsTrue()
+        {
+            // Arrange
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            var user = GetSampleUser();
+
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                await dbContext.Users.AddAsync(user);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Act
+            bool result;
+            User expectedUser;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.DeleteAsync(user.Id);
+                expectedUser = dbContext.Users.SingleOrDefault(u => u.Id == user.Id);
+            }
+
+            // Assert
+            Assert.True(result);
+            Assert.Null(expectedUser);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_WhenUserNotExists_ReturnsFalse()
+        {
+            // Arrange
+            var dbContextOptions = DbContextHelper.GetOptions<WebApiCoreSeedContext>();
+            
+            // Act
+            bool result;
+            using (var dbContext = new WebApiCoreSeedContext(dbContextOptions))
+            {
+                var userService = new UserService(dbContext);
+                result = await userService.DeleteAsync(Guid.NewGuid());
+            }
+
+            // Assert
+            Assert.False(result);
+        }
+
+        private void AssertUser(User expected, User actual)
+        {
+            Assert.Equal(expected.FirstName, actual.FirstName);
+            Assert.Equal(expected.LastName, actual.LastName);
+            Assert.Equal(expected.UserName, actual.UserName);
+            Assert.Equal(expected.Email, actual.Email);
+        }
+
+        private User GetSampleUser(Guid? id = null)
+        {
+            return new User
+            {
+                Id = id ?? Guid.NewGuid(),
+                Email = "johndoe@gmail.com",
+                FirstName = "John",
+                LastName = "Doe",
+                UserName = "johndoe",
+                CreatedOn = DateTime.Now
+            };
+        }
     }
 }
