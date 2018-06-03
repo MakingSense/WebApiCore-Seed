@@ -52,11 +52,3 @@ A text processor / gui
 | [Xunit](https://xunit.github.io/) | Testing framework |
 | [SwaggerUI](https://swagger.io/swagger-ui/) | UI that document and exposes the API endpoints |
 | [Swashbuckle](https://github.com/domaindrivendev/Swashbuckle) | Documentation generator for Swagger |
-    
-## Architecture
-* DDD classic
-    * Domain Services.
-    * Inversion of control using conventions.
-    * Autommaping for custom views decoupled from domain.
-  
-![demo](http://www.methodsandtools.com/archive/onion17.jpg)
