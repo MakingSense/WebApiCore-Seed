@@ -62,7 +62,7 @@ namespace Seed.Api.Controllers
         /// <response code="201">User created</response>
         [HttpPost]
         [ValidateModel]
-        [ProducesResponseType(typeof(User), 201)]
+        [ProducesResponseType(typeof(UserDto), 201)]
         public async Task<IActionResult> Create([FromBody]InputUserDto user)
         {
             // TODO: Fix validation attribute, it's not working as expected.
