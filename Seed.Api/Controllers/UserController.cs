@@ -42,30 +42,11 @@ namespace Seed.Api.Controllers
         /// <param name="userId" cref="Guid">Guid of the user</param>
         /// <response code="200">User for the given id</response>
         /// <response code="404">User not found</response>
-        [HttpGet("ById/{userId}")]
+        [HttpGet("{userId}")]
         [ProducesResponseType(typeof(UserDto), 200)]
         public async Task<IActionResult> Get(Guid userId)
         {
             var user = await _userService.GetByIdAsync(userId);
-
-            if (user == null) return NotFound();
-
-            var result = new UserDto(user);
-
-            return Ok(result);
-        }
-
-                /// <summary>
-        /// Gets a user for the given email
-        /// </summary>
-        /// <param name="email" cref="string">Email of the user</param>
-        /// <response code="200">User for the given email</response>
-        /// <response code="404">User not found</response>
-        [HttpGet("ByEmail/{email}")]
-        [ProducesResponseType(typeof(UserDto), 200)]
-        public async Task<IActionResult> Get(string email)
-        {
-            var user = await _userService.GetByEmailAsync(email);
 
             if (user == null) return NotFound();
 

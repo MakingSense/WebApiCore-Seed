@@ -75,33 +75,7 @@ namespace Seed.Api.IntegrationTests.Controllers
             }
 
             // Act
-            var result = await _httpClient.GetAsync($"{ResouceUri}ById/{sampleUser.Id.ToString()}");
-
-            // Assert
-            Assert.True(result.IsSuccessStatusCode);
-            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-
-            var user = JsonConvert.DeserializeObject<UserDto>(await result.Content.ReadAsStringAsync());
-            Assert.Equal(sampleUser.Id, user.Id);
-            Assert.Equal(sampleUser.FirstName, user.FirstName);
-            Assert.Equal(sampleUser.LastName, user.LastName);
-            Assert.Equal(sampleUser.UserName, user.UserName);
-            Assert.Equal(sampleUser.Email, user.Email);
-        }
-
-        [Fact]
-        public async Task Get_EmailReturnsOk()
-        {
-            // Arrange
-            var sampleUser = GetSampleUser();
-            using (var context = CreateContext())
-            {
-                await context.Users.AddAsync(sampleUser);
-                await context.SaveChangesAsync();
-            }
-
-            // Act
-            var result = await _httpClient.GetAsync($"{ResouceUri}ByEmail/{sampleUser.Email}");
+            var result = await _httpClient.GetAsync($"{ResouceUri}{sampleUser.Id.ToString()}");
 
             // Assert
             Assert.True(result.IsSuccessStatusCode);

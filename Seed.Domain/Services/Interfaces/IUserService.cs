@@ -10,11 +10,6 @@ namespace Seed.Domain.Services.Interfaces
     /// </summary>
     public interface IUserService : IBaseService<User>
     {
-        /// <summary>
-        /// Gets a user
-        /// </summary>
-        /// <param name="email">Email of the user to be retrieved</param>
-        /// <returns>A <see cref="User"/> object if the user is found, otherwise null</returns>
-        Task<User> GetByEmailAsync(string email);
+
     }
 }

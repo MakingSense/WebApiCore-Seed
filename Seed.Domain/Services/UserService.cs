@@ -18,11 +18,6 @@ namespace Seed.Domain.Services
             _dbContext = dbContext;
         }
 
-        public async Task<User> GetByEmailAsync(string email)
-        {
-            return await _dbContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
-        }
-
         public async Task<User> GetByIdAsync(Guid userId)
         {
             return await _dbContext.Users.FindAsync(userId);
