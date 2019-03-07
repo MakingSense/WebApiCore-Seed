@@ -3,6 +3,7 @@ using Seed.Data.EF;
 using Seed.Data.Models;
 using Seed.Domain.Services.Interfaces;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,6 +16,11 @@ namespace Seed.Domain.Services
         public UserService(WebApiCoreSeedContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _dbContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetByIdAsync(Guid userId)
