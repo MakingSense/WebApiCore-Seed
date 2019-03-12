@@ -9,39 +9,23 @@ using System.Threading.Tasks;
 
 namespace Seed.Domain.Services
 {
-    public class UserService : IUserService
+    public class UserService : BaseService<User>, IUserService
     {
-        private readonly WebApiCoreSeedContext _dbContext;
+        private readonly UserContext _userContext;
 
-        public UserService(WebApiCoreSeedContext dbContext)
+        public UserService(UserContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
+            _userContext = dbContext;
         }
 
-        public async Task<User> GetByIdAsync(Guid userId)
+        public async Task<User> GetByEmailAsync(string email)
         {
-            return await _dbContext.Users.FindAsync(userId);
+            return await _userContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task<List<User>> GetAsync()
+        public override async Task<User> UpdateAsync(User user)
         {
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        public async Task<User> CreateAsync(User user)
-        {
-            user.Id = Guid.NewGuid();
-            user.CreatedOn = DateTime.Now;
-
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
-
-            return user;
-        }
-
-        public async Task<User> UpdateAsync(User user)
-        {
-            var userToUpdate = await _dbContext.Users.FindAsync(user.Id);
+            var userToUpdate = await _userContext.Users.FindAsync(user.Id);
 
             if (userToUpdate == null) return null;
 
@@ -51,22 +35,9 @@ namespace Seed.Domain.Services
             userToUpdate.UserName = user.UserName;
             userToUpdate.UpdatedOn = DateTime.Now;
 
-            await _dbContext.SaveChangesAsync();
+            await _userContext.SaveChangesAsync();
 
             return userToUpdate;
-        }
-
-        public async Task<bool> DeleteAsync(Guid userId)
-        {
-            var userToDelete = await _dbContext.Users.FindAsync(userId);
-
-            if (userToDelete == null) return false;
-
-            _dbContext.Users.Remove(userToDelete);
-
-            var result = await _dbContext.SaveChangesAsync();
-
-            return result > 0;
         }
     }
 }
