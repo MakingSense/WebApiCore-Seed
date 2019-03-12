@@ -12,22 +12,22 @@
         /// <summary>
         /// Initializes a <see cref="WebApiCoreSeedContext"/> with sample Data
         /// </summary>
-        /// <param name="dbContext">Context to be initialized with sample data</param>
-        public static void Initialize(WebApiCoreSeedContext dbContext)
+        /// <param name="userContext">Context to be initialized with sample data</param>
+        public static void Initialize(UserContext userContext)
         {
-            dbContext.Database.EnsureCreated();
+            userContext.Database.EnsureCreated();
 
-            if (!dbContext.Users.Any())
+            if (!userContext.Users.Any())
             { 
                 var users = new[]
                 {
                     new User { CreatedOn = DateTime.Now, Email = "noreply@makingsense.com", FirstName = "John", LastName = "Doe", UserName = "JohnDoe" },
                 };
 
-                dbContext.Users.AddRange(users);
+                userContext.Users.AddRange(users);
             }
 
-            dbContext.SaveChanges();
+            userContext.SaveChanges();
         }
     }
 }

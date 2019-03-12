@@ -9,6 +9,7 @@ using Seed.Api.Authorization;
 using Seed.Api.Filters;
 using Seed.Api.Middleware;
 using Seed.Data.EF;
+using Seed.Data.Models;
 using Seed.Domain.Services;
 using Seed.Domain.Services.Interfaces;
 using Seed.Infrastructure.AuthZero;
@@ -38,7 +39,7 @@ namespace Seed.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebApiCoreSeedContext>(options => options.UseInMemoryDatabase(Environment.MachineName));
+            services.AddDbContext<WebApiCoreSeedContext<BaseEntity>>(options => options.UseInMemoryDatabase(Environment.MachineName));
 
             // Add framework services.
             services.AddMvc();
@@ -76,12 +77,13 @@ namespace Seed.Api
             services.AddSingleton<IAuthZeroClient>(sp => new AuthZeroClient(sp.GetRequiredService<IRestClient>(), Configuration["auth0:NonInteractiveClientId"], Configuration["auth0:NonInteractiveClientSecret"], Configuration["auth0:domain"]));
             services.AddTransient<IAuthZeroService>(sp => new AuthZeroService(sp.GetRequiredService<IAuthZeroClient>()));
 
+            services.AddSingleton<UserContext>(sp => new UserContext(options,sp.GetRequiredService<DbSet<User>>()));
             // Register Services
-            services.AddTransient<IUserService>(sp => new UserService(sp.GetRequiredService<WebApiCoreSeedContext>()));
+            services.AddTransient<IUserService>(sp => new UserService(sp.GetRequiredService<UserContext>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, WebApiCoreSeedContext dbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, UserContext userContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -100,7 +102,7 @@ namespace Seed.Api
 
             app.UseMvc();
 
-            DatabaseSeed.Initialize(dbContext);
+            DatabaseSeed.Initialize(userContext);
         }
 
         private static Info GetSwaggerMetadata()
